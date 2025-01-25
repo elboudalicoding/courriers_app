@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities;
+
+body {
+    @apply bg-background text-text-dark;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-secondary transition-colors;
+  }
+  
+  .input-field {
+    @apply border border-gray-300 focus:border-primary rounded-md;
+  }
