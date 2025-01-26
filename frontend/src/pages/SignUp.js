@@ -1,5 +1,6 @@
-import { React, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
 function SignUp() {
   const [values, setValues] = useState({
@@ -7,22 +8,27 @@ function SignUp() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
+
   const handleInput = (event) => {
     setValues((prev) => ({
       ...prev,
-      [event.target.name]: [event.target.value],
+      [event.target.name]: event.target.value, // Use event.target.value directly, not in an array
     }));
   };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(values); // Log the values here to see what is being sent
+    axios
+      .post("http://localhost:3001/signup", values)
+      .then((res) => {
+        navigate("/");
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">  
-        <body class="h-full">
-        ```
-      */}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -36,10 +42,13 @@ function SignUp() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="" method="POST" className="space-y-6">
+          <form
+             onSubmit={handleSubmit}
+            className="space-y-6"
+          >
             <div>
               <label
-                htmlFor="email"
+                htmlFor="username"
                 className="block text-sm/6 font-medium text-gray-900"
               >
                 Username
