@@ -2,22 +2,24 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Backend pour un projet Node.js avec MySQL",
-  "main": "src/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.7.9",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.12.0",
+    "process": "^0.11.10",
     "sequelize": "^6.37.5"
   },
   "devDependencies": {
