@@ -3,6 +3,7 @@ const db = require("../config/dbConfig");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const validateEmail = require("validator").isEmail; // Utilisation de validator pour valider l'email.
+const process = require("process");
 
 const signup = async (req, res) => {
   const { username, email, password } = req.body;
@@ -42,7 +43,7 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
-  onsole.log("Login request received:", { email }); // Log incoming request
+  console.log("Login request received:", { email }); // Log incoming request
 
   // Validate input
   if (!email || !password) {
