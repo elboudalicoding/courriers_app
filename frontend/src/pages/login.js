@@ -24,7 +24,7 @@ function Login() {
       authenticate(); // Update AuthContext
       navigate("/dashboard");
     } catch (err) {
-      setError(err.message || "Something went wrong. Please try again.");
+      setError(err.message || "Something went wrong. Please try again .");
     }
   };
 
