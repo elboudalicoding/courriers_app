@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useAuth, AuthProvider } from "./context/authContext";
 import SignUp from "./pages/SignUp";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
+import C_Depart from "./pages/C_Depart/C_Depart";
 
 function App() {
   const { isAuthenticated, login, logout } = useAuth();
@@ -20,10 +21,11 @@ function App() {
     <Router>
       <Navbar isAuthenticated={isAuthenticated} onLogout={logout} />
       <Routes>
+      <Route path="/depart" component={C_Depart} />
         <Route path="/signup" element={<SignUp />} />
         <Route
           path="/dashboard"
-          element={isAuthenticated ? <Dashboard /> : <Login />}
+          element={ <Dashboard /> }
         />
         <Route path="/" element={<Login />} />
       </Routes>
