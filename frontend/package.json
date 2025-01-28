@@ -10,7 +10,15 @@
     "@testing-library/user-event": "^13.5.0",
     "ajv": "^8.17.1",
     "ajv-keywords": "^5.1.0",
+<<<<<<< Updated upstream
     "axios": "^1.7.9",
+=======
+<<<<<<< Updated upstream
+=======
+    "axios": "^1.7.9",
+    "lucide-react": "^0.474.0",
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.3",
