@@ -1,13 +1,14 @@
 import axios from "axios";
+import { getToken } from "./auth";
 
 const API = axios.create({
-  baseURL: "http://localhost:3001/api", // Base URL pour les appels backend
+  baseURL: "http://localhost:3001/api",
+  headers: { "Content-Type": "application/json" }, // Ensure JSON format
 });
-
-// Ajouter automatiquement le token dans le header Authorization (si présent)
+//request token if login has been successfully
 API.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("authToken"); // Récupérer le token
+    const token = getToken(); //localStorage.getItem("authToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -15,7 +16,7 @@ API.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
+//signup function
 export const signup = async (userData) => {
   try {
     const response = await API.post("/auth/signup", userData);
@@ -24,13 +25,15 @@ export const signup = async (userData) => {
     throw error.response?.data || { error: "Network error" };
   }
 };
-
+//login function
 export const login = async (credentials) => {
   try {
+    console.log("📤 Sending login request:", credentials);
     const response = await API.post("/auth/login", credentials);
+    console.log("✅ Server response:", response.data);
     return response.data;
   } catch (error) {
-    throw error.response?.data || { error: "Network error" };
+    throw error.response?.data || new Error("Network error");
   }
 };
 

@@ -1,101 +1,100 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/authContext";
+import { login } from "../utils/api";
+import { saveToken } from "../utils/auth";
 
 function Login() {
+  const [values, setValues] = useState({ email: "", password: "" });
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { login: authenticate } = useAuth();
+
+  const handleInput = (event) => {
+    setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError(null);
+
+    try {
+      const { token } = await login(values);
+      saveToken(token); // Save token to localStorage
+      authenticate(); // Update AuthContext
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message || "Something went wrong. Please try again .");
+    }
+  };
+
   return (
-    <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            alt="Your Company"
-            src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-            className="mx-auto h-10 w-auto"
-          />
-          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm/6 font-medium text-gray-900"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm/6 font-medium text-gray-900"
-                >
-                  Password
-                </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  autoComplete="current-password"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sign in
-              </button>
-            </div>
-          </form>
-
-          <p className="mt-10 text-center text-sm/6 text-gray-500">
-            You don't have an Account ?{" "}
-            <Link
-              to="/signup"
-              className="font-semibold text-indigo-600 hover:text-indigo-500"
-            >
-              Sign up
-            </Link>
-          </p>
-        </div>
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <img
+          className="mx-auto h-10 w-auto"
+          src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
+          alt="Your Company"
+        />
+        <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
+          Sign in to your account
+        </h2>
       </div>
-    </>
+
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-900"
+            >
+              Email address
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              placeholder="Email"
+              className="block w-full mt-2 px-3 py-1.5 rounded-md border border-gray-300"
+              onChange={handleInput}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-900"
+            >
+              Password
+            </label>
+            <input
+              onChange={handleInput}
+              name="password"
+              type="password"
+              required
+              placeholder="Password"
+              className="block w-full mt-2 px-3 py-1.5 rounded-md border border-gray-300"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500"
+          >
+            Sign in
+          </button>
+        </form>
+
+        <p className="mt-6 text-center text-sm text-gray-500">
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-indigo-600 hover:text-indigo-500">
+            Sign up
+          </Link>
+        </p>
+      </div>
+    </div>
   );
 }
 
