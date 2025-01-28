@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { signup } from "../utils/api";
-import { saveToken } from "../utils/auth";
+import { signup } from "../utils/api";// i changed that "./api"
+// import { saveToken } from "../utils/auth";
 
 function SignUp() {
   const [values, setValues] = useState({
@@ -23,7 +23,7 @@ function SignUp() {
     event.preventDefault();
     try {
       const data = await signup(values); // Appel à la fonction signup
-      saveToken(data.token); // Sauvegarder le token
+      //saveToken(data.token); // Sauvegarder le token
       navigate("/"); // Redirection après succès
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
@@ -124,5 +124,4 @@ function SignUp() {
     </div>
   );
 }
-
 export default SignUp;

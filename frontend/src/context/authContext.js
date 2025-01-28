@@ -1,20 +1,24 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
-// Create a Context
 const AuthContext = createContext();
 
-// Custom hook to use auth context
 export const useAuth = () => useContext(AuthContext);
 
-// AuthContext Provider
 export const AuthProvider = ({ children }) => {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem("authToken") !== null;
+  });
 
-  const login = () => setIsAuth(true);
-  const logout = () => setIsAuth(false);
+  const login = () => setIsAuthenticated(true);
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem("authToken"); // Supprimer le token
+    localStorage.removeItem("isAuthenticated"); // Supprimer la persistance
+  };
 
   return (
-    <AuthContext.Provider value={{ isAuth, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
