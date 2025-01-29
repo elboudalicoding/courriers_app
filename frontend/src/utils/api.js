@@ -2,7 +2,7 @@ import axios from "axios";
 import { getToken } from "./auth";
 
 const API = axios.create({
-  baseURL: "http://localhost:3001/api",
+  baseURL: "http://localhost:5000/api",
   headers: { "Content-Type": "application/json" }, // Ensure JSON format
 });
 //request token if login has been successfully
