@@ -6,10 +6,13 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/login";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
+
 import CourriersTable from "./pages/mails_arrived";
 import CreateNewArrivee from "./pages/CreateNewArrivee";
 import Copy from "./pages/copy_create-new-courrier";
 
+import Depart from "./pages/Courriers/Depart";
+import CreerDepartForm from "./pages/Courriers/Ajouter_Depart";
 function App() {
   const { isAuthenticated, login } = useAuth();
 
@@ -28,6 +31,9 @@ function App() {
         <Route path="/copy" element={<Copy />} />
         <Route path="/" element={<CreateNewArrivee />} />
         {/* <Route path="/" element={<Login />} /> */}
+      <Route path="/depart" element={<Depart />} />
+      <Route path="/cdepart" element={<CreerDepartForm />} />
+        <Route path="/" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />

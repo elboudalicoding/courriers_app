@@ -62,5 +62,16 @@ export const createCourrier = async (courrierData) => {
     );
   }
 };
+//fonction ajouter depart
+// Fonction pour créer un départ
+export const creerDepart = async (departData) => {
+  try {
+    const response = await API.post("/depart", departData);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la création du départ :", error.response?.data || error.message);
+    throw error.response?.data || { error: "Erreur réseau" };
+  }
+};
 
 export default API;
