@@ -6,6 +6,9 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/login";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
+import CourriersTable from "./pages/mails_arrived";
+import CreateNewArrivee from "./pages/CreateNewArrivee";
+import Copy from "./pages/copy_create-new-courrier";
 
 function App() {
   const { isAuthenticated, login } = useAuth();
@@ -21,7 +24,10 @@ function App() {
     <Router>
       <Navbar isAuthenticated={isAuthenticated} />
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/courriersTable" element={<CourriersTable />} />
+        <Route path="/copy" element={<Copy />} />
+        <Route path="/" element={<CreateNewArrivee />} />
+        {/* <Route path="/" element={<Login />} /> */}
         <Route path="/signup" element={<SignUp />} />
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
