@@ -6,6 +6,8 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/login";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
+import Depart from "./pages/Courriers/Depart";
+import CreerDepartForm from "./pages/Courriers/Ajouter_Depart";
 
 function App() {
   const { isAuthenticated, login } = useAuth();
@@ -21,6 +23,8 @@ function App() {
     <Router>
       <Navbar isAuthenticated={isAuthenticated} />
       <Routes>
+      <Route path="/depart" element={<Depart />} />
+      <Route path="/cdepart" element={<CreerDepartForm />} />
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
