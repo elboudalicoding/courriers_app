@@ -11,13 +11,9 @@ import CreateNewArrivee from "./pages/CreateNewArrivee";
 import Copy from "./pages/copy_create-new-courrier";
 import Depart from "./pages/Courriers/Depart";
 import CreerDepartForm from "./pages/Courriers/Ajouter_Depart";
-<<<<<<< HEAD
 import Liste_Arrive from "./pages/Courriers/Liste_Arrivee";
-=======
 import EntitesOrigineTable from "./pages/EntitesOrigineTable";
 import CreateEntiteOrigine from "./pages/CreateEntiteOrigine";
-
->>>>>>> b84ec5d1c3caf2c6346c9ca29aa995ac54aa539f
 function App() {
   const { isAuthenticated, login } = useAuth();
 
