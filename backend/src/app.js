@@ -4,6 +4,7 @@ const multer = require("multer");
 const authRoutes = require("./routes/authRoutes");
 const courrierRoutes = require("./routes/courrierRoutes");
 const errorHandler = require("./middlewares/errorHandler");
+const departRoutes = require("./routes/departRoutes");
 
 const app = express();
 const upload = multer();
@@ -15,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 // Mount the routes
 app.use("/api/auth", authRoutes);
 app.use("/api/courriers", upload.single("file"), courrierRoutes);
-
+app.use("/api/depart", upload.single("file"), departRoutes);
 // Error handler middleware should be used after all routes
 app.use(errorHandler);
 

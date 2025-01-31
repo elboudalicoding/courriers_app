@@ -13,6 +13,7 @@ import Copy from "./pages/copy_create-new-courrier";
 
 import Depart from "./pages/Courriers/Depart";
 import CreerDepartForm from "./pages/Courriers/Ajouter_Depart";
+import Liste_Arrive from "./pages/Courriers/Liste_Arrivee";
 function App() {
   const { isAuthenticated, login } = useAuth();
 
@@ -37,6 +38,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/listeArrivee" element={<Liste_Arrive />} />
       </Routes>
     </Router>
   );

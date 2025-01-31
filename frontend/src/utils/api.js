@@ -66,7 +66,10 @@ export const createCourrier = async (courrierData) => {
 // Fonction pour créer un départ
 export const creerDepart = async (departData) => {
   try {
-    const response = await API.post("/depart", departData);
+    const response = await API.post("/depart", departData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    console.log("✅ Server response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Erreur lors de la création du départ :", error.response?.data || error.message);
