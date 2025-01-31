@@ -28,7 +28,7 @@ export default function Navbar1() {
         {" "}
         {/* Garde l'espace entre les liens */}
         <Link
-          to="/arrivee"
+          to="/CourriersTable"
           className="flex items-center space-x-2 hover:text-gray-300"
         >
           <Home className="w-5 h-5" />
