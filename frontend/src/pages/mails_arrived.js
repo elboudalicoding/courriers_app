@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,46 +11,35 @@ import {
 } from "../components/ui/table";
 import { Button } from "../components/ui/buttton";
 import { useNavigate } from "react-router-dom";
-import React from "react";
-
-const data = [
-  {
-    dateUCD: "24-12-2024",
-    numUCD: "29/2024",
-    dateOrigine: "24-12-2024",
-    numOrigine: "549745",
-    entite: "ENSA - UCD",
-    objet: "Demande d’ouverture de Master en Génie Énergétique (GE)",
-    type: "urgence",
-    support: "papier",
-  },
-  {
-    dateUCD: "24-12-2024",
-    numUCD: "28/2024",
-    dateOrigine: "24-12-2024",
-    numOrigine: "45",
-    entite: "FPSB - UCD",
-    objet: "مرحبا بكم في فضاء الترشح علي بوابة التشغيل العمومي EE",
-    type: "confidentiel",
-    support: "papier",
-  },
-  {
-    dateUCD: "24-12-2024",
-    numUCD: "27/2024",
-    dateOrigine: "24-12-2024",
-    numOrigine: "3633",
-    entite: "ENSA - UCD",
-    objet: "مرحبا بكم في فضاء الترشح علي بوابة التشغيل العمومي",
-    type: "urgence",
-    support: "numerique",
-  },
-];
+import { fetchCourriers, downloadFile } from "../utils/api";
 
 const CourriersTable = () => {
-  const navigate = useNavigate(); // Add navigate hook
+  const navigate = useNavigate();
+  const [courriers, setCourriers] = useState([]);
+
+  useEffect(() => {
+    const getCourriers = async () => {
+      try {
+        const data = await fetchCourriers();
+        setCourriers(data);
+      } catch (error) {
+        console.error("❌ Error fetching courriers:", error);
+      }
+    };
+
+    getCourriers();
+  }, []);
 
   const handleButtonClick = () => {
-    navigate("/create-new-arrivee"); // Redirects to the desired page
+    navigate("/CreateNewArrivee");
+  };
+
+  const handleDownloadClick = async (id) => {
+    try {
+      await downloadFile(id);
+    } catch (error) {
+      console.error("❌ Error downloading file:", error);
+    }
   };
 
   return (
@@ -58,7 +48,7 @@ const CourriersTable = () => {
         <h2 className="text-xl font-semibold">Liste des Courriers Arrivés</h2>
         <Button
           className="bg-green-600 hover:bg-green-700 text-white"
-          onClick={handleButtonClick} // Attach redirection logic
+          onClick={handleButtonClick}
         >
           Créer un nouveau Arrivée
         </Button>
@@ -74,20 +64,32 @@ const CourriersTable = () => {
             <TableHead>Objet</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Support</TableHead>
+            <TableHead>Fichier</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((item, index) => (
+          {courriers.map((item, index) => (
             <TableRow key={index} className="border-b">
-              <TableCell>{item.dateUCD}</TableCell>
-              <TableCell>{item.numUCD}</TableCell>
-              <TableCell>{item.dateOrigine}</TableCell>
-              <TableCell>{item.numOrigine}</TableCell>
-              <TableCell>{item.entite}</TableCell>
+              <TableCell>{item.date_arrivee}</TableCell>
+              <TableCell>{item.id_annee}</TableCell>
+              <TableCell>{item.date_origine}</TableCell>
+              <TableCell>{item.numero_origine}</TableCell>
+              <TableCell>{item.entite_origine}</TableCell>
               <TableCell>{item.objet}</TableCell>
-              <TableType type={item.type} />
-              <TableSupport support={item.support} />
+              <TableType type={item.type_courrier} />
+              <TableSupport support={item.type_support} />
+              <TableCell>
+                {item.file && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => handleDownloadClick(item.id)}
+                  >
+                    Télécharger
+                  </Button>
+                )}
+              </TableCell>
               <TableCell>
                 <div className="flex gap-2">
                   <Button size="sm" variant="ghost">

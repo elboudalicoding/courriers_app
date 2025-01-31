@@ -6,13 +6,14 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/login";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
-
 import CourriersTable from "./pages/mails_arrived";
 import CreateNewArrivee from "./pages/CreateNewArrivee";
 import Copy from "./pages/copy_create-new-courrier";
-
 import Depart from "./pages/Courriers/Depart";
 import CreerDepartForm from "./pages/Courriers/Ajouter_Depart";
+import EntitesOrigineTable from "./pages/EntitesOrigineTable";
+import CreateEntiteOrigine from "./pages/CreateEntiteOrigine";
+
 function App() {
   const { isAuthenticated, login } = useAuth();
 
@@ -27,14 +28,19 @@ function App() {
     <Router>
       <Navbar isAuthenticated={isAuthenticated} />
       <Routes>
-        <Route path="/courriersTable" element={<CourriersTable />} />
+        <Route path="/CourriersTable" element={<CourriersTable />} />
+        <Route path="/CreateNewArrivee" element={<CreateNewArrivee />} />
+
         <Route path="/copy" element={<Copy />} />
-        <Route path="/" element={<CreateNewArrivee />} />
-        {/* <Route path="/" element={<Login />} /> */}
-      <Route path="/depart" element={<Depart />} />
-      <Route path="/cdepart" element={<CreerDepartForm />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/entitesOrigineTable" element={<EntitesOrigineTable />} />
+        <Route path="/createEntiteOrigine" element={<CreateEntiteOrigine />} />
+
+        <Route path="/depart" element={<Depart />} />
+        <Route path="/cdepart" element={<CreerDepartForm />} />
+
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>

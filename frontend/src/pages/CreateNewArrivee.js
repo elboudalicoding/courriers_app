@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { createCourrier } from "../utils/api";
+import React, { useState, useEffect } from "react";
+import { createCourrier, fetchExpediteurNames } from "../utils/api";
 import { useNavigate } from "react-router-dom";
 
 const CreateNewArrivee = () => {
@@ -17,6 +17,21 @@ const CreateNewArrivee = () => {
     file: null,
   });
   const [error, setError] = useState(null);
+  const [expediteurs, setExpediteurs] = useState([]);
+  const [showExpediteurs, setShowExpediteurs] = useState(false);
+
+  useEffect(() => {
+    const getExpediteurs = async () => {
+      try {
+        const data = await fetchExpediteurNames();
+        setExpediteurs(data);
+      } catch (error) {
+        console.error("❌ Error fetching expediteurs:", error);
+      }
+    };
+
+    getExpediteurs();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -25,6 +40,11 @@ const CreateNewArrivee = () => {
     } else {
       setFormData({ ...formData, [name]: value });
     }
+  };
+
+  const handleExpediteurClick = (expediteur) => {
+    setFormData({ ...formData, expediteur: expediteur.nom });
+    setShowExpediteurs(false);
   };
 
   const handleSubmit = async (e) => {
@@ -96,13 +116,37 @@ const CreateNewArrivee = () => {
 
           <div>
             <label className="block text-gray-600">Expéditeur:</label>
-            <input
-              type="text"
-              name="expediteur"
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                name="expediteur"
+                value={formData.expediteur}
+                onChange={handleChange}
+                onFocus={() => setShowExpediteurs(true)}
+                required
+                className="w-full p-2 border rounded"
+              />
+              <button
+                type="button"
+                className="absolute right-0 top-0 mt-2 mr-2"
+                onClick={() => setShowExpediteurs(!showExpediteurs)}
+              >
+                Choose
+              </button>
+            </div>
+            {showExpediteurs && (
+              <div className="border rounded mt-2 max-h-40 overflow-y-auto">
+                {expediteurs.map((expediteur) => (
+                  <div
+                    key={expediteur.nom}
+                    className="p-2 cursor-pointer hover:bg-gray-200"
+                    onClick={() => handleExpediteurClick(expediteur)}
+                  >
+                    {expediteur.nom}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div>
@@ -176,4 +220,3 @@ const CreateNewArrivee = () => {
 };
 
 export default CreateNewArrivee;
- 
