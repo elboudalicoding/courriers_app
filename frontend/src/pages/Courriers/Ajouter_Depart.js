@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Calendar, Clock, FileText, User, Users, Package, Plus } from "lucide-react";
+import { FileText, Plus } from "lucide-react";
 import Navbar1 from "../../components/Navbar1";
 import { creerDepart } from "../../utils/api"; // Import de l'API
 
@@ -10,7 +10,7 @@ const CreerDepartForm = () => {
     signePar: "",
     numeroOrdre: "",
     objet: "",
-    fichier: null,
+    file: null,
     traitePar: "",
     dateHeure: "",
     destination: "",
@@ -26,18 +26,42 @@ const CreerDepartForm = () => {
   };
 
   const handleFileChange = (e) => {
-    setFormData({ ...formData, fichier: e.target.files[0] });
+    setFormData({ ...formData, file: e.target.files[0] });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    const form = new FormData();
+
+    // Ajouter les autres données du formulaire
+    form.append("signePar", formData.signePar);
+    form.append("numeroOrdre", formData.numeroOrdre);
+    form.append("objet", formData.objet);
+    form.append("traitePar", formData.traitePar);
+    form.append("dateHeure", formData.dateHeure);
+    form.append("destination", formData.destination);
+    form.append("nombreFichiers", formData.nombreFichiers);
+
+    // Ajouter le fichier
+    form.append("file", formData.file);
+
     try {
-      await creerDepart(formData);
+      await creerDepart(form); // Utilise la méthode API pour envoyer le formData
       alert("Départ créé avec succès !");
     } catch (error) {
       alert("Erreur lors de la création du départ.");
     }
+  };
+
+  const handleAddDestination = () => {
+    if (!newDestination) {
+      alert("La destination ne peut pas être vide.");
+      return;
+    }
+
+    console.log("Nouvelle destination ajoutée :", newDestination);
+    setShowModal(false);  // Fermer le modal après ajout
+    setNewDestination("");  // Réinitialiser le champ de destination
   };
 
   return (
@@ -53,7 +77,7 @@ const CreerDepartForm = () => {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                <User className="w-4 h-4 inline" /> Signé par *
+                Signé par *
               </label>
               <select name="signePar" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md">
                 <option value="">-- Sélectionner --</option>
@@ -63,30 +87,30 @@ const CreerDepartForm = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                <Package className="w-4 h-4 inline" /> Numéro d'ordre *
+                Numéro d'ordre *
               </label>
               <input type="text" name="numeroOrdre" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md" />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                <FileText className="w-4 h-4 inline" /> Objet *
+                Objet *
               </label>
               <input type="text" name="objet" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md" />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                <FileText className="w-4 h-4 inline" /> Fichier *
+                Fichier *
               </label>
-              <input type="file" onChange={handleFileChange} className="w-full px-3 py-1.5 border rounded-md" />
+              <input type="file" name="file" onChange={handleFileChange} className="w-full px-3 py-1.5 border rounded-md" />
             </div>
           </div>
 
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                <Users className="w-4 h-4 inline" /> Traité par *
+                Traité par *
               </label>
               <select name="traitePar" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md">
                 <option value="">-- Sélectionner --</option>
@@ -96,14 +120,14 @@ const CreerDepartForm = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                <Calendar className="w-4 h-4 inline" /> Date & Heure
+                Date & Heure
               </label>
               <input type="datetime-local" name="dateHeure" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md" />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                <Users className="w-4 h-4 inline" /> Destination *
+                Destination *
               </label>
               <div className="flex gap-2">
                 <select name="destination" onChange={handleChange} className="flex-1 px-3 py-1.5 border rounded-md">
@@ -118,7 +142,7 @@ const CreerDepartForm = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                <FileText className="w-4 h-4 inline" /> Nombre de Fichiers *
+                Nombre de Fichiers *
               </label>
               <input type="number" name="nombreFichiers" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md" />
             </div>
@@ -126,7 +150,7 @@ const CreerDepartForm = () => {
 
           <div className="mt-6 flex justify-center col-span-2">
             <button type="submit" className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md">
-              <FileText className="w-4 h-4 inline" /> Créer
+              Créer
             </button>
           </div>
         </form>
@@ -136,10 +160,10 @@ const CreerDepartForm = () => {
             <div className="bg-white p-6 rounded-lg w-96">
               <h3 className="text-lg font-semibold mb-4">Ajouter une nouvelle destination</h3>
               <input type="text" value={newDestination} onChange={(e) => setNewDestination(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-green-500" />
+                className="w-full px-3 py-2 border rounded-md mb-4" />
               <div className="flex justify-end gap-2">
                 <button onClick={() => setShowModal(false)} className="px-4 py-2 border rounded-md">Annuler</button>
-                <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Ajouter</button>
+                <button onClick={handleAddDestination} className="px-4 py-2 bg-green-600 text-white rounded-md">Ajouter</button>
               </div>
             </div>
           </div>
