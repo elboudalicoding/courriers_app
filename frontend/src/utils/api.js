@@ -152,4 +152,16 @@ export const fetchExpediteurNames = async () => {
     );
   }
 };
+// Fetch Courrier Details function
+export const fetchCourrierDetails = async (id) => {
+  try {
+    const response = await API.get(`/courriers/${id}`);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchCourrierDetails function")
+    );
+  }
+};
 export default API;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createCourrier, fetchExpediteurNames } from "../utils/api";
 import { useNavigate } from "react-router-dom";
 
-const CreateNewArrivee = () => {
+const CreateNewArrivee = ({ onNavClick }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     date_arrivee: "",
@@ -55,7 +55,7 @@ const CreateNewArrivee = () => {
     }
     try {
       await createCourrier(formDataToSend);
-      navigate("/courriersTable");
+      onNavClick("courriersTable"); // Update state to show CourriersTable
     } catch (err) {
       setError(err.response ? err.response.data.message : err.message);
     }
