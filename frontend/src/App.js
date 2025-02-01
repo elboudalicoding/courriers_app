@@ -11,6 +11,7 @@ import CreateNewArrivee from "./pages/CreateNewArrivee";
 import Copy from "./pages/copy_create-new-courrier";
 import Depart from "./pages/Courriers/Depart";
 import CreerDepartForm from "./pages/Courriers/Ajouter_Depart";
+import Liste_Arrive from "./pages/Courriers/Liste_Arrivee";
 import EntitesOrigineTable from "./pages/EntitesOrigineTable";
 import CreateEntiteOrigine from "./pages/CreateEntiteOrigine";
 import CourrierDetails from "./pages/CourrierDetails";
@@ -40,6 +41,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/listeArrivee" element={<Liste_Arrive />} />
       </Routes>
     </Router>
   );
