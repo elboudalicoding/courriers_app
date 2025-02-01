@@ -12,10 +12,14 @@ import {
 import { Button } from "../components/ui/buttton";
 import { useNavigate } from "react-router-dom";
 import { fetchCourriers, downloadFile } from "../utils/api";
+import Modal from "../components/Modal";
+import CourrierDetails from "./CourrierDetails";
 
-const CourriersTable = () => {
+const CourriersTable = ({ onNavClick }) => {
   const navigate = useNavigate();
   const [courriers, setCourriers] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCourrierId, setSelectedCourrierId] = useState(null);
 
   useEffect(() => {
     const getCourriers = async () => {
@@ -31,7 +35,12 @@ const CourriersTable = () => {
   }, []);
 
   const handleButtonClick = () => {
-    navigate("/CreateNewArrivee");
+    onNavClick("createNewArrivee");
+  };
+
+  const handleDetailClick = (id) => {
+    setSelectedCourrierId(id);
+    setIsModalOpen(true);
   };
 
   const handleDownloadClick = async (id) => {
@@ -40,6 +49,10 @@ const CourriersTable = () => {
     } catch (error) {
       console.error("❌ Error downloading file:", error);
     }
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCourrierId(null);
   };
 
   return (
@@ -92,11 +105,15 @@ const CourriersTable = () => {
               </TableCell>
               <TableCell>
                 <div className="flex gap-2">
-                  <Button size="sm" variant="ghost">
-                    Voir
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => handleDetailClick(item.id)}
+                  >
+                    Details
                   </Button>
                   <Button size="sm" variant="ghost">
-                    Filtrer
+                    Send
                   </Button>
                 </div>
               </TableCell>
@@ -104,6 +121,9 @@ const CourriersTable = () => {
           ))}
         </TableBody>
       </Table>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <CourrierDetails id={selectedCourrierId} />
+      </Modal>
     </div>
   );
 };

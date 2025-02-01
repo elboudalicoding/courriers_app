@@ -57,3 +57,18 @@ exports.downloadFile = async (req, res) => {
     });
   }
 };
+exports.getCourrierById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const courrier = await Courrier.getCourrierById(id);
+    if (!courrier) {
+      return res.status(404).json({ message: "Courrier not found" });
+    }
+    res.status(200).json(courrier);
+  } catch (error) {
+    console.error("❌ Error fetching courrier:", error.message);
+    res.status(500).json({
+      message: "Error fetching courrier in <courrierController.js>",
+    });
+  }
+};

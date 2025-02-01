@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Home,
   Mail,
@@ -9,7 +9,7 @@ import {
   LogOut,
 } from "lucide-react";
 
-export default function Navbar1() {
+export default function Navbar1({ onNavClick }) {
   return (
     <nav className="flex items-center justify-between bg-gradient-to-r from-blue-300 to-blue-300 text-white p-4 shadow-lg">
       {/* Logo */}
@@ -27,27 +27,27 @@ export default function Navbar1() {
       <div className="flex items-center space-x-12 text-sm">
         {" "}
         {/* Garde l'espace entre les liens */}
-        <Link
-          to="/CourriersTable"
+        <button
+          onClick={() => onNavClick("courriersTable")}
           className="flex items-center space-x-2 hover:text-gray-300"
         >
           <Home className="w-5 h-5" />
           <span>Arrivée</span>
-        </Link>
-        <Link
-          to="/depart"
+        </button>
+        <button
+          onClick={() => onNavClick("depart")}
           className="flex items-center space-x-2 hover:text-gray-300"
         >
           <Mail className="w-5 h-5" />
           <span>Départ</span>
-        </Link>
-        <Link
-          to="/etablissements"
+        </button>
+        <button
+          onClick={() => onNavClick("entitesOrigineTable")}
           className="flex items-center space-x-2 hover:text-gray-300"
         >
           <School className="w-5 h-5" />
           <span>Établissements</span>
-        </Link>
+        </button>
         <Link
           to="/statistiques"
           className="flex items-center space-x-2 hover:text-gray-300"
