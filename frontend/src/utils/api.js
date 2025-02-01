@@ -79,6 +79,18 @@ export const creerDepart = async (departData) => {
     throw error.response?.data || { error: "Erreur réseau" };
   }
 };
+// Fetch Courriers_departs function
+export const fetchCourriersDeparts = async () => {
+  try {
+    const response = await API.get("/depart");
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchCourriers function")
+    );
+  }
+};
 // Fetch Courriers function
 export const fetchCourriers = async () => {
   try {

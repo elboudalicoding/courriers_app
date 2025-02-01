@@ -21,6 +21,7 @@ const CourrierDetails = ({ id }) => {
     const getCourrierDetails = async () => {
       try {
         const data = await fetchCourrierDetails(id);
+        
         setCourrier(data);
       } catch (error) {
         setError(error.message);

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { createCourrierDepart } = require("../controllers/courrierControllerDepart");
+const { createCourrierDepart ,getCourriers} = require("../controllers/courrierControllerDepart");
 
 router.post("/", createCourrierDepart);
-
+router.get("/", getCourriers);
 module.exports = router;
