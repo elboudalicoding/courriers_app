@@ -91,6 +91,18 @@ export const fetchCourriersDeparts = async () => {
     );
   }
 };
+// Fetch Courriers_departs function
+export const fetchCourriersArrivee = async () => {
+  try {
+    const response = await API.get("/courriers/arrivee");
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchCourriers function")
+    );
+  }
+};
 // Fetch Courriers function
 export const fetchCourriers = async () => {
   try {
@@ -107,6 +119,31 @@ export const fetchCourriers = async () => {
 export const downloadFile = async (id) => {
   try {
     const response = await API.get(`/courriers/download/${id}`, {
+      responseType: "blob",
+    });
+    const contentDisposition = response.headers["content-disposition"];
+    const fileName = contentDisposition
+      ? contentDisposition.split("filename=")[1].replace(/"/g, "")
+      : `file_${id}`;
+    const url = window.URL.createObjectURL(
+      new Blob([response.data], { type: response.headers["content-type"] })
+    );
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,downloadFile function")
+    );
+  }
+};
+// Download File_Depart function
+export const downloadFileDepart = async (id) => {
+  try {
+    const response = await API.get(`/depart/download/${id}`, {
       responseType: "blob",
     });
     const contentDisposition = response.headers["content-disposition"];
@@ -168,6 +205,30 @@ export const fetchExpediteurNames = async () => {
 export const fetchCourrierDetails = async (id) => {
   try {
     const response = await API.get(`/courriers/${id}`);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchCourrierDetails function")
+    );
+  }
+};
+// Fetch Courrier Details function
+export const fetchCourrierDetailsDepart = async (id) => {
+  try {
+    const response = await API.get(`/depart/${id}`);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchCourrierDetails function")
+    );
+  }
+};
+// Fetch Courrier Details function
+export const DetailsDepart = async (id) => {
+  try {
+    const response = await API.get(`/depart/${id}`);
     return response.data;
   } catch (error) {
     throw (

@@ -42,6 +42,34 @@ class CourrierDepart {
       throw new Error("Database error");
     }
   }
+  //download file
+  static async getFileById(id) {
+    const query = `SELECT fichier, file_name, file_mime_type FROM depart WHERE id = ?`;
+    try {
+      const [rows] = await db.execute(query, [id]);
+      if (rows.length === 0) {
+        return null;
+      }
+      return rows[0];
+    } catch (error) {
+      console.error("❌ Error fetching file:", error);
+      throw new Error("Database error");
+    }
+  }
+  //courrier 
+  static async getCourrierById(id) {
+    const query = `SELECT * FROM depart WHERE id = ?`;
+    try {
+      const [rows] = await db.execute(query, [id]);
+      if (rows.length === 0) {
+        return null;
+      }
+      return rows[0];
+    } catch (error) {
+      console.error("❌ Error fetching courrier:", error);
+      throw new Error("Database error");
+    }
+  }
 }
 
 module.exports = CourrierDepart;

@@ -28,6 +28,27 @@ exports.createCourrierDepart = async (req, res) => {
     });
   }
 };
+exports.downloadFile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const fileData = await CourrierDepart.getFileById(id);
+    if (!fileData) {
+      return res.status(404).json({ message: "File not found" });
+    }
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${fileData.file_name}"`
+    );
+    res.setHeader("Content-Type", fileData.file_mime_type);
+    res.send(fileData.file);
+    
+  } catch (error) {
+    console.error("❌ Error downloading file:", error.message);
+    res.status(500).json({
+      message: "Error downloading file in <courrierController.js>",
+    });
+  }
+};
 exports.getCourriers = async (req, res) => {
   try {
     const courriers = await CourrierDepart.getCourriers();
@@ -37,6 +58,21 @@ exports.getCourriers = async (req, res) => {
     console.error("❌ Error fetching courriers:", error.message);
     res.status(500).json({
       message: "Error fetching courriers in <courrierController.js>",
+    });
+  }
+};
+exports.getCourrierById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const courrier = await CourrierDepart.getCourrierById(id);
+    if (!courrier) {
+      return res.status(404).json({ message: "Courrier not found" });
+    }
+    res.status(200).json(courrier);
+  } catch (error) {
+    console.error("❌ Error fetching courrier:", error.message);
+    res.status(500).json({
+      message: "Error fetching courrier in <courrierController.js>",
     });
   }
 };

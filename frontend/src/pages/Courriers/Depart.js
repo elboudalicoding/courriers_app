@@ -1,13 +1,18 @@
 import React,{ useState, useEffect }from "react";
 import { Link } from "react-router-dom";
-import { fetchCourriersDeparts } from "../../utils/api";
+import { downloadFileDepart, fetchCourriersDeparts } from "../../utils/api";
+import {
+  FaInfoCircle,
+  FaDownload,
 
-
-
+} from "react-icons/fa";
+import CourrierDetailsDepart from "./Courrier_Depart_Details";
+import Modal from "../../components/Modal";
 const Depart = ({ id })=> {
   const [courrier, setCourrier] = useState(null);
     const [error, setError] = useState(null);
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedCourrierId, setSelectedCourrierId] = useState(null);
     useEffect(() => {
       const getCourrierDetails = async () => {
         try {
@@ -34,7 +39,14 @@ const Depart = ({ id })=> {
     const date = new Date(dateStr);
     return date.toLocaleString(); // Format local (selon la configuration locale)
   };
-
+  const handleDetailClick = (id) => {
+    setSelectedCourrierId(id);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCourrierId(null);
+  };
   return (
     <>
       <div className="flex flex-col">
@@ -75,20 +87,28 @@ const Depart = ({ id })=> {
             <td className="py-1 px-2 border text-sm">{courrier.signePar}</td>
             <td className="py-1 px-2 border text-sm">{courrier.traitePar}</td>
             <td className="py-1 px-2 border text-sm">
-              <Link to={`/fichier/${courrier.id}`} className="text-blue-500 hover:underline">
-                {courrier.file_name}
-              </Link>
+               <button 
+               onClick={() => downloadFileDepart(courrier.id)}
+               className="bg-blue-600 text-white px-3 py-1 rounded flex items-center space-x-1 hover:bg-blue-700">
+                          <FaDownload /> <span>Télécharger</span>
+               </button>
+              
             </td>
             <td className="py-1 px-2 border text-sm">
-              <Link to={`/details/${courrier.id}`} className="text-blue-500 hover:underline">
-               
-              </Link>
+            <button 
+                onClick={() => handleDetailClick(courrier.id)}
+               className="bg-blue-600 text-white px-3 py-1 rounded flex items-center space-x-1 hover:bg-blue-700">
+                          <FaInfoCircle /> <span>Détails</span>
+               </button>
             </td>
           </tr>
         ))}
       </tbody>
     </table>
   </div>
+  <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <CourrierDetailsDepart id={selectedCourrierId} />
+      </Modal>
 </div>
 
     </>
