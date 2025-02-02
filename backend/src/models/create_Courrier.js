@@ -42,6 +42,16 @@ class Courrier {
       throw new Error("Database error");
     }
   }
+  static async getCourriersArrivee() {
+    const query = `SELECT date_arrivee, entite_origine,objet FROM courriers_arrives`;
+    try {
+      const [rows] = await db.execute(query);
+      return rows;
+    } catch (error) {
+      console.error("❌ Error fetching courriers:", error);
+      throw new Error("Database error");
+    }
+  }
   static async getFileById(id) {
     const query = `SELECT file, file_name, file_mime_type FROM courriers_arrives WHERE id = ?`;
     try {

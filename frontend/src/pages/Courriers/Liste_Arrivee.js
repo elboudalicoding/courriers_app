@@ -1,72 +1,97 @@
-import React, { useState } from "react";
-
-// Simuler les données des courriers arrivés
-const courriersArrives = [
-  {
-    id: 1,
-    dateArrivee: "2025-01-25",
-    entiteOrigine: "Entreprise A",
-    objet: "Document important",
-    traitePar: "Utilisateur 1",
-    file: "document1.pdf",
-  },
-  {
-    id: 2,
-    dateArrivee: "2025-01-26",
-    entiteOrigine: "Entreprise B",
-    objet: "Facture",
-    traitePar: "Utilisateur 2",
-    file: "facture.pdf",
-  },
-  // Ajouter plus de courriers si nécessaire
-];
-
-const Liste_Arrive = () => {
-  const [courriers, setCourriers] = useState(courriersArrives);
-
-  const handleTransferer = (courrierId) => {
-    // Logique pour transférer le courrier à un utilisateur
-    // Cela peut impliquer un appel API pour modifier la base de données ou mettre à jour l'état local
-
-    alert(`Transfert du courrier ${courrierId} effectué`);
-    // Ici, tu peux ajouter la logique de transfert, comme par exemple :
-    // Mettre à jour l'état "traitePar" pour ce courrier
-  };
+import React,{ useState, useEffect }from "react";
+import { Eye, X, Calendar, User, FileText, SortAsc, Settings } from 'lucide-react';
+import {  fetchCourriersArrivee} from "../../utils/api";
+const TableArrivees = ({ id })=> {
+  const [courrier, setCourrier] = useState([]);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+        const getCourrierDetails = async () => {
+          try {
+            const data = await fetchCourriersArrivee(id);
+           
+            setCourrier(data);
+          } catch (error) {
+            setError(error.message);
+          }
+        };
+    
+        getCourrierDetails();
+      }, [id]);
 
   return (
-    <div className="min-h-screen flex flex-col p-4">
-      <h2 className="text-xl font-semibold mb-6">Liste des Courriers Arrivés</h2>
-      <table className="w-full table-auto border-collapse border border-gray-300">
-        <thead>
-          <tr>
-            <th className="px-4 py-2 border-b text-left">Date</th>
-            <th className="px-4 py-2 border-b text-left">Expéditeur</th>
-            <th className="px-4 py-2 border-b text-left">Objet</th>
-            <th className="px-4 py-2 border-b text-left">Traité par</th>
-            <th className="px-4 py-2 border-b text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {courriers.map((courrier) => (
-            <tr key={courrier.id}>
-              <td className="px-4 py-2 border-b">{courrier.dateArrivee}</td>
-              <td className="px-4 py-2 border-b">{courrier.entiteOrigine}</td>
-              <td className="px-4 py-2 border-b">{courrier.objet}</td>
-              <td className="px-4 py-2 border-b">{courrier.traitePar}</td>
-              <td className="px-4 py-2 border-b">
-                <button
-                  onClick={() => handleTransferer(courrier.id)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                >
-                  Transférer
-                </button>
-              </td>
+    <div className="w-full bg-white rounded-lg shadow">
+      <div className="bg-[#1e3a8a] text-white p-4 rounded-t-lg">
+        <h2 className="text-lg font-semibold">Liste des Arrivées</h2>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-gray-50 border-b">
+              <th className="p-4 text-left font-medium text-gray-600">
+                <div className="flex items-center space-x-2">
+                  <Calendar size={16} />
+                  <span>Date</span>
+                </div>
+              </th>
+              <th className="p-4 text-left font-medium text-gray-600 border-l">
+                <div className="flex items-center space-x-2">
+                  <User size={16} />
+                  <span>Expéditeur</span>
+                </div>
+              </th>
+              <th className="p-4 text-left font-medium text-gray-600 border-l">
+                <div className="flex items-center space-x-2">
+                  <FileText size={16} />
+                  <span>Objet</span>
+                </div>
+              </th>
+              <th className="p-4 text-left font-medium text-gray-600 border-l">
+                <div className="flex items-center space-x-2">
+                  <SortAsc size={16} />
+                  <span>Traiter par</span>
+                </div>
+              </th>
+              <th className="p-4 text-left font-medium text-gray-600 border-l">
+                <div className="flex items-center space-x-2">
+                  <Settings size={16} />
+                  <span>Actions</span>
+                </div>
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {courrier.map((item, index) => (
+              <tr key={index} className="border-b hover:bg-gray-50">
+                <td className="p-4">{item.date_arrivee}</td>
+                <td className="p-4 border-l">{item.entite_origine}</td>
+                <td className="p-4 border-l">{item.objet}</td>
+                <td className="p-4 border-l">{item.traiterPar}</td>
+                <td className="p-4 border-l">
+                  <div className="flex space-x-2">
+                    <button className="px-2 py-1 bg-cyan-500 text-white rounded hover:bg-cyan-600">
+                      <div className="flex items-center space-x-1">
+                        <Eye size={16} />
+                        <span className="border-l border-white/40 pl-1">Voir</span>
+                      </div>
+                    </button>
+                    <button className="px-2 py-1 bg-amber-500 text-white rounded hover:bg-amber-600">
+                      <div className="flex items-center space-x-1">
+                        <X size={16} />
+                        <span className="border-l border-white/40 pl-1">Supprimer</span>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+    
     </div>
   );
 };
 
-export default Liste_Arrive;
+export default TableArrivees;

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useAuth, AuthProvider } from "./context/authContext";
 
 import SignUp from "./pages/SignUp";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
 import CourriersTable from "./pages/mails_arrived";

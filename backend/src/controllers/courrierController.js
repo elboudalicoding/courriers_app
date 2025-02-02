@@ -36,7 +36,17 @@ exports.getCourriers = async (req, res) => {
     });
   }
 };
-
+exports.getCourriersArrivee = async (req, res) => {
+  try {
+    const courriers = await Courrier.getCourriersArrivee();
+    res.status(200).json(courriers);
+  } catch (error) {
+    console.error("❌ Error fetching courriers:", error.message);
+    res.status(500).json({
+      message: "Error fetching courriers in <courrierController.js>",
+    });
+  }
+};
 exports.downloadFile = async (req, res) => {
   try {
     const { id } = req.params;
