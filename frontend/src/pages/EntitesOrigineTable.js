@@ -3,7 +3,7 @@ import { Button } from "../components/ui/buttton";
 import { useNavigate } from "react-router-dom";
 import { fetchEntitesOrigine } from "../utils/api";
 
-const EntitesOrigineTable = () => {
+const EntitesOrigineTable = ({ onNavClick }) => {
   const [etablissements, setEtablissements] = useState([]);
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const EntitesOrigineTable = () => {
   }, []);
 
   const handleButtonClick = () => {
-    navigate("/createEntiteOrigine");
+    onNavClick("createEntiteOrigine");
   };
 
   return (

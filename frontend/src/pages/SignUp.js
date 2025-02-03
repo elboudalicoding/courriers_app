@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { signup } from "../utils/api";// i changed that "./api"
+import { signup } from "../utils/api"; // i changed that "./api"
 // import { saveToken } from "../utils/auth";
 
 function SignUp() {
@@ -24,7 +24,7 @@ function SignUp() {
     try {
       const data = await signup(values); // Appel à la fonction signup
       //saveToken(data.token); // Sauvegarder le token
-      navigate("/"); // Redirection après succès
+      navigate("/login"); // Redirection après succès
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     }

@@ -164,4 +164,83 @@ export const fetchCourrierDetails = async (id) => {
     );
   }
 };
+// Fetch Users function
+export const fetchUsers = async () => {
+  try {
+    const response = await API.get("/users");
+    return response.data; // ! WARNING  What is the difference between response and response.data ?
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchUsers function")
+    );
+  }
+};
+export const createUser = async (user) => {
+  try {
+    const response = await API.post("/users", user);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,createUser function")
+    );
+  }
+};
+export const deleteUser = async (id) => {
+  try {
+    const response = await API.delete(`/users/${id}`);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,deleteUser function")
+    );
+  }
+};
+export const updateUser = async (id, user) => {
+  try {
+    const response = await API.put(`/users/${id}`, user);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,updateUser function")
+    );
+  }
+};
+export const fetchUserNames = async () => {
+  try {
+    const response = await API.get("/usernames");
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchUserNames function")
+    );
+  }
+};
+
+export const sendMail = async (mailData) => {
+  try {
+    const response = await API.post("/mails/send", mailData);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,sendMail function")
+    );
+  }
+};
+export const fetchUserMails = async (userId) => {
+  try {
+    const response = await API.get(`/mails/${userId}`);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchUserMails function")
+    );
+  }
+};
 export default API;

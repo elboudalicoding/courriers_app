@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createEntiteOrigine } from "../utils/api";
 
-const CreateEntiteOrigine = () => {
+const CreateEntiteOrigine = ({ onNavClick }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nom: "",
@@ -22,7 +22,7 @@ const CreateEntiteOrigine = () => {
     e.preventDefault();
     try {
       await createEntiteOrigine(formData);
-      navigate("/entitesOrigineTable");
+      onNavClick("entitesOrigineTable");
     } catch (err) {
       setError(err.response ? err.response.data.message : err.message);
     }

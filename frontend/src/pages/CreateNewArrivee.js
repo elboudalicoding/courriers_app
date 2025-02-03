@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createCourrier, fetchExpediteurNames } from "../utils/api";
-import { useNavigate } from "react-router-dom";
 
 const CreateNewArrivee = ({ onNavClick }) => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     date_arrivee: "",
     id_annee: "",

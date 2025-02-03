@@ -9,16 +9,17 @@ import {
   TableType,
   TableSupport,
 } from "../components/ui/table";
-import { Button } from "../components/ui/buttton";
-import { useNavigate } from "react-router-dom";
+import { FaDownload } from "react-icons/fa";
+import { Button } from "../components/ui/button";
 import { fetchCourriers, downloadFile } from "../utils/api";
 import Modal from "../components/Modal";
 import CourrierDetails from "./CourrierDetails";
+import MailSend from "./Courriers/mailSend";
 
 const CourriersTable = ({ onNavClick }) => {
-  const navigate = useNavigate();
   const [courriers, setCourriers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
   const [selectedCourrierId, setSelectedCourrierId] = useState(null);
 
   useEffect(() => {
@@ -50,9 +51,18 @@ const CourriersTable = ({ onNavClick }) => {
       console.error("❌ Error downloading file:", error);
     }
   };
+
+  const handleSendClick = () => {
+    setIsTransferModalOpen(true);
+  };
+
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedCourrierId(null);
+  };
+
+  const closeTransferModal = () => {
+    setIsTransferModalOpen(false);
   };
 
   return (
@@ -99,7 +109,7 @@ const CourriersTable = ({ onNavClick }) => {
                     variant="ghost"
                     onClick={() => handleDownloadClick(item.id)}
                   >
-                    Télécharger
+                    <FaDownload /> <span>Télécharger</span>
                   </Button>
                 )}
               </TableCell>
@@ -112,7 +122,7 @@ const CourriersTable = ({ onNavClick }) => {
                   >
                     Details
                   </Button>
-                  <Button size="sm" variant="ghost">
+                  <Button size="sm" variant="ghost" onClick={handleSendClick}>
                     Send
                   </Button>
                 </div>
@@ -124,6 +134,7 @@ const CourriersTable = ({ onNavClick }) => {
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <CourrierDetails id={selectedCourrierId} />
       </Modal>
+      <MailSend isOpen={isTransferModalOpen} onClose={closeTransferModal} />
     </div>
   );
 };

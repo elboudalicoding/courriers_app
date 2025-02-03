@@ -3,12 +3,11 @@ const cors = require("cors");
 const multer = require("multer");
 const authRoutes = require("./routes/authRoutes");
 const courrierRoutes = require("./routes/courrierRoutes");
-const errorHandler = require("./middlewares/errorHandler");
-<<<<<<< HEAD
 const departRoutes = require("./routes/departRoutes");
-=======
 const entiteOrigineRoutes = require("./routes/entiteOrigineRoutes");
->>>>>>> b84ec5d1c3caf2c6346c9ca29aa995ac54aa539f
+const userRoutes = require("./routes/userRoutes");
+const errorHandler = require("./middlewares/errorHandler");
+const userMailRoutes = require("./routes/userMailRoutes");
 
 const app = express();
 const upload = multer();
@@ -20,12 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 // Mount the routes
 app.use("/api/auth", authRoutes);
 app.use("/api/courriers", upload.single("file"), courrierRoutes);
-<<<<<<< HEAD
 app.use("/api/depart", upload.single("file"), departRoutes);
-=======
 app.use("/api/entites_origine", entiteOrigineRoutes);
+app.use("/api", userRoutes); // Add user routes
+app.use("/api/mails", userMailRoutes); // Add user mail routes
 
->>>>>>> b84ec5d1c3caf2c6346c9ca29aa995ac54aa539f
 // Error handler middleware should be used after all routes
 app.use(errorHandler);
 
