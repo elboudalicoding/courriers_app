@@ -15,6 +15,8 @@ import Liste_Arrive from "./pages/Courriers/Liste_Arrivee";
 import EntitesOrigineTable from "./pages/EntitesOrigineTable";
 import CreateEntiteOrigine from "./pages/CreateEntiteOrigine";
 import CourrierDetails from "./pages/CourrierDetails";
+import SearchForm from "./pages/Recherche/SearchForm";
+
 
 function App() {
   const { isAuthenticated, login } = useAuth();
@@ -30,6 +32,7 @@ function App() {
     <Router>
       <Navbar isAuthenticated={isAuthenticated} />
       <Routes>
+      <Route path="/Recherche" element={<SearchForm />} />
         <Route path="/courrierDetails/:id" element={<CourrierDetails />} />
         <Route path="/CourriersTable" element={<CourriersTable />} />
         <Route path="/CreateNewArrivee" element={<CreateNewArrivee />} />

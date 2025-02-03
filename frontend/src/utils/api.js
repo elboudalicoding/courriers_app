@@ -91,7 +91,7 @@ export const fetchCourriersDeparts = async () => {
     );
   }
 };
-// Fetch Courriers_departs function
+// Fetch Courriers_arrivee function
 export const fetchCourriersArrivee = async () => {
   try {
     const response = await API.get("/courriers/arrivee");
@@ -234,6 +234,59 @@ export const DetailsDepart = async (id) => {
     throw (
       error.response?.data ||
       new Error("Network error <api.js> ,fetchCourrierDetails function")
+    );
+  }
+};
+// Fonction de recherche des arrivées
+// Fonction de recherche des arrivées
+export const onSearchArrivees = async (filtres) => {
+  try {
+    // Convertir les filtres en paramètres d'URL
+    const params = new URLSearchParams();
+    if (filtres.dateFrom) params.append('dateDebut', filtres.dateFrom); 
+    if (filtres.dateTo) params.append('dateFin', filtres.dateTo);       
+    if (filtres.etablissement) params.append('expediteur', filtres.etablissement); 
+    if (filtres.objet) params.append('objet', filtres.objet);
+  //  console.log("Paramètres de la requête :", params.toString());
+    //console.log("Valeur de filtres.objet :", filtres.objet);
+
+    // Construire la requête avec les paramètres
+    const queryString = params.toString();
+    const response = await API.get(`/courriers/search?${queryString}`);
+    
+    // Ajoutez cette ligne pour inspecter la réponse
+  //  console.log("✅ Réponse du serveur :", response.data);
+    
+    return response.data; // Retourne les données de la réponse
+  } catch (error) {
+    console.error('Erreur recherche arrivées:', error);
+    // Gérer les erreurs et renvoyer une réponse utilisateur
+    throw error.response?.data || { error: 'Erreur réseau' };
+  }
+};
+
+
+
+// Fetch Courriers function
+export const onSearchDeparts = async (filtres) => {
+  try {
+    const params = new URLSearchParams();
+    if (filtres.dateFrom) params.append('dateDebut', filtres.dateFrom); 
+    if (filtres.dateTo) params.append('dateFin', filtres.dateTo);     
+    if (filtres.etablissement) params.append('expediteur', filtres.etablissement);
+    if (filtres.objet) params.append('objet', filtres.objet);
+   console.log("Paramètres de la requête :", params.toString());
+   console.log("Valeur de filtres.objet :", filtres.objet);
+
+    // Construire la requête avec les paramètres
+    const queryString1 = params.toString();
+    const response = await API.get(`/depart/search?${queryString1}`);
+   
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchCourriers function")
     );
   }
 };

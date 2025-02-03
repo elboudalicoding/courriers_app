@@ -1,7 +1,7 @@
 import React,{ useState, useEffect }from "react";
 import { Eye, X, Calendar, User, FileText, SortAsc, Settings } from 'lucide-react';
 import {  fetchCourriersArrivee} from "../../utils/api";
-const TableArrivees = ({ id })=> {
+const ListesArrivees = ({ id })=> {
   const [courrier, setCourrier] = useState([]);
   const [error, setError] = useState(null);
   useEffect(() => {
@@ -94,4 +94,4 @@ const TableArrivees = ({ id })=> {
   );
 };
 
-export default TableArrivees;
+export default ListesArrivees;
