@@ -15,6 +15,8 @@ import Liste_Arrive from "./pages/Courriers/Liste_Arrivee";
 import EntitesOrigineTable from "./pages/EntitesOrigineTable";
 import CreateEntiteOrigine from "./pages/CreateEntiteOrigine";
 import CourrierDetails from "./pages/CourrierDetails";
+import UsersList from "./pages/Users/UsersList";
+
 import SearchForm from "./pages/Recherche/SearchForm";
 
 
@@ -43,6 +45,7 @@ function App() {
         <Route path="/cdepart" element={<CreerDepartForm />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/usersList" element={<UsersList />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/listeArrivee" element={<Liste_Arrive />} />
       </Routes>

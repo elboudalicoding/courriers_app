@@ -6,6 +6,7 @@ import CourriersTable from "./mails_arrived";
 import Depart from "./Courriers/Depart";
 import CreateNewArrivee from "./CreateNewArrivee";
 import EntitesOrigineTable from "./EntitesOrigineTable";
+import CreateEntiteOrigine from "./CreateEntiteOrigine";
 import SearchForm from "./Recherche/SearchForm"; // Importez le composant SearchForm
 
 const Dashboard = () => {
@@ -37,6 +38,10 @@ const Dashboard = () => {
         {activeComponent === "createNewArrivee" && (
           <CreateNewArrivee onNavClick={handleNavClick} />
         )}
+        {activeComponent === "entitesOrigineTable" && (
+          <EntitesOrigineTable onNavClick={handleNavClick} />
+        )}
+        {activeComponent === "createEntiteOrigine" && <CreateEntiteOrigine  onNavClick={handleNavClick}/>}
         {activeComponent === "entitesOrigineTable" && <EntitesOrigineTable />}
         {activeComponent === "searchForm" && <SearchForm />} {/* Ajout de la ligne */}
       </div>
