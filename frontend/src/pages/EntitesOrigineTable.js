@@ -5,7 +5,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 
-const EntitesOrigineTable = () => {
+const EntitesOrigineTable = ({ onNavClick }) => {
   const [etablissements, setEtablissements] = useState([]);
   const [selectedEtablissement, setSelectedEtablissement] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,9 +54,17 @@ const EntitesOrigineTable = () => {
 
   return (
     <div className="p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">
-        Liste des Entités d'Origine
-      </h2>
+      <div className="flex justify-between items-center bg-blue-800 text-white rounded-t-lg px-6 py-3 mb-6">
+        <h2 className="text-xl font-semibold mb-4">
+          Liste des Entités d'Origine
+        </h2>
+        <button
+          onClick={() => onNavClick("createEntiteOrigine")}
+          className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-6 rounded"
+        >
+          Créer Nouveau Départ
+        </button>
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white">
           <thead>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import { FileText, Plus } from "lucide-react";
 import { creerDepart } from "../../utils/api"; // Import de l'API
 
-const CreerDepartForm = () => {
+const CreerDepartForm = ({onNavClick}) => {
   const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
   const [showModal, setShowModal] = useState(false);
   const [newDestination, setNewDestination] = useState("");
@@ -48,8 +48,8 @@ const CreerDepartForm = () => {
 
     try {
       await creerDepart(form); // Utilise la méthode API pour envoyer le formData
-      alert("Départ créé avec succès !");
-      navigate("/dashboard"); // Redirection vers la table des départs
+     
+      onNavClick("depart"); // Redirection vers la table des départs
     } catch (error) {
       alert("Erreur lors de la création du départ.");
     }
@@ -82,7 +82,9 @@ const CreerDepartForm = () => {
               </label>
               <select name="signePar" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md">
                 <option value="">-- Sélectionner --</option>
-                <option value="option1">Option 1</option>
+                <option value="option1">Directeur</option>
+                <option value="option1">Responsable-informatique</option>
+
               </select>
             </div>
 
@@ -115,7 +117,7 @@ const CreerDepartForm = () => {
               </label>
               <select name="traitePar" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md">
                 <option value="">-- Sélectionner --</option>
-                <option value="option1">Option 1</option>
+                <option value="option1">Directeur</option>
               </select>
             </div>
 
@@ -133,7 +135,10 @@ const CreerDepartForm = () => {
               <div className="flex gap-2">
                 <select name="destination" onChange={handleChange} className="flex-1 px-3 py-1.5 border rounded-md">
                   <option value="">Sélectionner une Destination</option>
-                  <option value="dest1">Destination 1</option>
+                  <option value="dest1">Ensa</option>
+                  <option value="dest1">ENCG</option>
+                  <option value="dest1">FSH</option>
+
                 </select>
                 <button type="button" onClick={() => setShowModal(true)} className="px-2 py-2 border rounded-md hover:bg-gray-50">
                   <Plus className="w-4 h-4" />
