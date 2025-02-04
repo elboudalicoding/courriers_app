@@ -78,6 +78,46 @@ class Courrier {
       throw new Error("Database error");
     }
   }
+  //Recherche
+static async getCourriersCherchees(filtres) {
+    const { dateDebut, dateFin, expediteur, objet } = filtres;
+
+// S'assurer que dateDebut et dateFin existent
+const dateDebutValue = dateDebut || '1900-01-01'; 
+const dateFinValue = dateFin || '2100-12-31';
+
+// Préparer les valeurs facultatives (NULL si non définies)
+const expediteurValue = expediteur || null;
+const objetValue = objet?.$regex ? `%${objet.$regex}%` : null;
+
+// Nouvelle requête SQL
+const query = `
+  SELECT * FROM courriers_arrives
+  WHERE 
+    date_arrivee BETWEEN ? AND ?
+    OR (
+      (? IS NULL OR entite_origine = ?) 
+      OR 
+      (? IS NULL OR objet LIKE ?)
+    )
+`;
+
+try {
+  const [rows] = await db.execute(query, [
+    dateDebutValue,
+    dateFinValue,
+    expediteurValue, expediteurValue, // Vérifie l’expéditeur
+    objetValue, objetValue // Vérifie l’objet
+  ]);
+
+  console.log("Résultats :", rows);
+  return rows;
+} catch (error) {
+  console.error("❌ Erreur lors de la récupération des courriers:", error);
+  throw new Error("Erreur de base de données");
+}
+
+  }
 }
 
 module.exports = Courrier;

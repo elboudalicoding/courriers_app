@@ -76,3 +76,36 @@ exports.getCourrierById = async (req, res) => {
     });
   }
 };
+
+//recuperer les courriers
+exports.getCourriersCherchees = async (req, res) => {
+  // Récupérer les paramètres de la requête
+  const { dateDebut, dateFin, expediteur, objet } = req.query;
+
+  try {
+    // Construire les filtres pour la recherche
+    const filters = {
+      dateDebut: dateDebut ? new Date(dateDebut) : undefined,
+      dateFin: dateFin ? new Date(dateFin) : undefined,
+      expediteur: expediteur || undefined,
+      objet: objet ? { $regex: objet, $options: "i" } : undefined
+    };
+
+    console.log("Filtres : ", filters); // Ajout du journal de débogage
+
+    // Appeler la fonction du modèle pour récupérer les courriers
+    const courriers = await CourrierDepart.getCourriersCherchees(filters);
+
+    console.log("Résultats : ", courriers); // Ajout du journal de débogage
+
+    // Vérifie si des courriers ont été trouvés
+    if (!courriers || courriers.length === 0) {
+      return res.status(404).json({ message: "Aucun courrier trouvé avec ces critères." });
+    }
+
+    // Renvoi des résultats
+    res.json(courriers);
+  } catch (err) {
+    res.status(500).json({ message: "Erreur du serveur" });
+  }
+};
