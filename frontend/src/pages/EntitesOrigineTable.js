@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { Button } from "../components/ui/buttton";
-import { useNavigate } from "react-router-dom";
 import { fetchEntitesOrigine } from "../utils/api";
 
 const EntitesOrigineTable = ({ onNavClick }) => {
   const [etablissements, setEtablissements] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const getEntitesOrigine = async () => {

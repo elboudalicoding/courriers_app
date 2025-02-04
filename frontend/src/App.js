@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useAuth, AuthProvider } from "./context/authContext";
 
 import SignUp from "./pages/SignUp";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
 import CourriersTable from "./pages/mails_arrived";
@@ -19,7 +19,6 @@ import UsersList from "./pages/Users/UsersList";
 
 import SearchForm from "./pages/Recherche/SearchForm";
 
-
 function App() {
   const { isAuthenticated, login } = useAuth();
 
@@ -34,7 +33,7 @@ function App() {
     <Router>
       <Navbar isAuthenticated={isAuthenticated} />
       <Routes>
-      <Route path="/Recherche" element={<SearchForm />} />
+        <Route path="/Recherche" element={<SearchForm />} />
         <Route path="/courrierDetails/:id" element={<CourrierDetails />} />
         <Route path="/CourriersTable" element={<CourriersTable />} />
         <Route path="/CreateNewArrivee" element={<CreateNewArrivee />} />
@@ -44,7 +43,7 @@ function App() {
         <Route path="/depart" element={<Depart />} />
         <Route path="/cdepart" element={<CreerDepartForm />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/usersList" element={<UsersList />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/listeArrivee" element={<Liste_Arrive />} />

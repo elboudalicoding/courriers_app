@@ -41,9 +41,11 @@ const Dashboard = () => {
         {activeComponent === "entitesOrigineTable" && (
           <EntitesOrigineTable onNavClick={handleNavClick} />
         )}
-        {activeComponent === "createEntiteOrigine" && <CreateEntiteOrigine  onNavClick={handleNavClick}/>}
-        {activeComponent === "entitesOrigineTable" && <EntitesOrigineTable />}
-        {activeComponent === "searchForm" && <SearchForm />} {/* Ajout de la ligne */}
+        {activeComponent === "createEntiteOrigine" && (
+          <CreateEntiteOrigine onNavClick={handleNavClick} />
+        )}
+        {activeComponent === "searchForm" && <SearchForm />}{" "}
+        {/* Ajout de la ligne */}
       </div>
 
       <Footer />
