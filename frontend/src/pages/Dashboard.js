@@ -8,7 +8,7 @@ import CreateNewArrivee from "./CreateNewArrivee";
 import EntitesOrigineTable from "./EntitesOrigineTable";
 import CreateEntiteOrigine from "./CreateEntiteOrigine";
 import SearchForm from "./Recherche/SearchForm"; // Importez le composant SearchForm
-
+import UserList from "./Users/UsersList";
 const Dashboard = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
 
@@ -44,7 +44,12 @@ const Dashboard = () => {
         {activeComponent === "createEntiteOrigine" && (
           <CreateEntiteOrigine onNavClick={handleNavClick} />
         )}
-        {activeComponent === "searchForm" && <SearchForm />}{" "}
+        {activeComponent === "userList" && (
+          <UserList onNavClick={handleNavClick} />
+        )}
+        {activeComponent === "searchForm" && (
+          <SearchForm onNavClick={handleNavClick} />
+        )}
         {/* Ajout de la ligne */}
       </div>
 

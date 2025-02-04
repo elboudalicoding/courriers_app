@@ -366,4 +366,16 @@ export const onSearchDeparts = async (filtres) => {
     throw error.response?.data || { error: "Erreur réseau" };
   }
 };
+export const updateEntiteOrigine = async (id, entiteOrigine) => {
+  try {
+    const response = await API.put(`/entites_origine/${id}`, entiteOrigine);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,updateEntiteOrigine function")
+    );
+  }
+};
+
 export default API;

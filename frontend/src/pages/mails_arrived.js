@@ -9,7 +9,7 @@ import {
   TableType,
   TableSupport,
 } from "../components/ui/table";
-import { FaDownload } from "react-icons/fa";
+import { FaDownload, FaInfoCircle } from "react-icons/fa";
 import { Button } from "../components/ui/button";
 import { fetchCourriers, downloadFile } from "../utils/api";
 import Modal from "../components/Modal";
@@ -106,8 +106,8 @@ const CourriersTable = ({ onNavClick }) => {
                 {item.file && (
                   <Button
                     size="sm"
-                    variant="ghost"
                     onClick={() => handleDownloadClick(item.id)}
+                    className="bg-blue-600 text-white px-4 py-2 rounded flex items-center space-x-2 hover:bg-blue-700"
                   >
                     <FaDownload /> <span>Télécharger</span>
                   </Button>
@@ -117,12 +117,17 @@ const CourriersTable = ({ onNavClick }) => {
                 <div className="flex gap-2">
                   <Button
                     size="sm"
-                    variant="ghost"
                     onClick={() => handleDetailClick(item.id)}
+                    className="bg-blue-600 text-white px-4 py-2 rounded flex items-center space-x-2 hover:bg-blue-700"
                   >
-                    Details
+                    <FaInfoCircle /> <span>Details</span>
                   </Button>
-                  <Button size="sm" variant="ghost" onClick={handleSendClick}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={handleSendClick}
+                    className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                  >
                     Send
                   </Button>
                 </div>
