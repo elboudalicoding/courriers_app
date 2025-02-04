@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchCourrierDetails } from "../utils/api";
+import { fetchCourrierDetailsDepart } from "../../utils/api";
 import {
   FaEnvelope,
   FaCalendar,
@@ -13,14 +13,14 @@ import {
   FaBox,
 } from "react-icons/fa";
 
-const CourrierDetails = ({ id }) => {
+const CourrierDetailsDepart = ({ id }) => {
   const [courrier, setCourrier] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const getCourrierDetails = async () => {
       try {
-        const data = await fetchCourrierDetails(id);
+        const data = await fetchCourrierDetailsDepart(id);
         
         setCourrier(data);
       } catch (error) {
@@ -49,24 +49,36 @@ const CourrierDetails = ({ id }) => {
       </div>
 
       <div className="space-y-3 text-gray-700">
+      <div className="flex items-center space-x-2">
+          <FaUser className="text-gray-500" />
+          <span>
+            <strong>Signe Par:</strong> {courrier.signePar}
+          </span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <FaUser className="text-gray-500" />
+          <span>
+            <strong>traitePar:</strong> {courrier.traitePar}
+          </span>
+        </div>
         <div className="flex items-center space-x-2">
           <FaCalendar className="text-gray-500" />
           <span>
-            <strong>Date:</strong> {courrier.date_arrivee}
+            <strong>Date&Heure:</strong> {courrier.dateHeure}
           </span>
         </div>
 
         <div className="flex items-center space-x-2">
           <FaIdCard className="text-gray-500" />
           <span>
-            <strong>ID et Année:</strong> {courrier.id_annee}
+            <strong>numero Ordre:</strong> {courrier.numeroOrdre}
           </span>
         </div>
 
         <div className="flex items-center space-x-2">
           <FaUser className="text-gray-500" />
           <span>
-            <strong>Expéditeur:</strong> {courrier.entite_origine}
+            <strong>Destination:</strong> {courrier.destination}
           </span>
         </div>
 
@@ -77,19 +89,7 @@ const CourrierDetails = ({ id }) => {
           </span>
         </div>
 
-        <div className="flex items-center space-x-2">
-          <FaFile className="text-gray-500" />
-          <span>
-            <strong>Type du support:</strong> {courrier.type_support}
-          </span>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <FaFile className="text-gray-500" />
-          <span>
-            <strong>Type de courrier:</strong> {courrier.type_courrier}
-          </span>
-        </div>
+        
 
         <div className="flex items-center space-x-2">
           <FaEye className="text-gray-500" />
@@ -99,15 +99,13 @@ const CourrierDetails = ({ id }) => {
           <button className="bg-blue-600 text-white px-3 py-1 rounded flex items-center space-x-1 hover:bg-blue-700">
             <FaEye /> <span>Voir</span>
           </button>
-          <button className="bg-gray-400 text-white px-3 py-1 rounded flex items-center space-x-1 hover:bg-gray-500">
-            <FaDownload /> <span>Télécharger</span>
-          </button>
+          
         </div>
 
         <div className="flex items-center space-x-2">
           <FaBox className="text-gray-500" />
           <span>
-            <strong>Nombre de Pièces:</strong> {courrier.nombre_pieces_jointes}
+            <strong>Nombre de Pièces:</strong> {courrier.nombreFichiers}
           </span>
         </div>
       </div>
@@ -115,4 +113,4 @@ const CourrierDetails = ({ id }) => {
   );
 };
 
-export default CourrierDetails;
+export default CourrierDetailsDepart;

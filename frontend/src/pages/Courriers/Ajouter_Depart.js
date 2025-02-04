@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import { FileText, Plus } from "lucide-react";
-import Navbar1 from "../../components/Navbar1";
 import { creerDepart } from "../../utils/api"; // Import de l'API
 
 const CreerDepartForm = () => {
+  const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
   const [showModal, setShowModal] = useState(false);
   const [newDestination, setNewDestination] = useState("");
   const [formData, setFormData] = useState({
@@ -48,6 +49,7 @@ const CreerDepartForm = () => {
     try {
       await creerDepart(form); // Utilise la méthode API pour envoyer le formData
       alert("Départ créé avec succès !");
+      navigate("/dashboard"); // Redirection vers la table des départs
     } catch (error) {
       alert("Erreur lors de la création du départ.");
     }
@@ -66,7 +68,6 @@ const CreerDepartForm = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar1 />
       <div className="flex-grow w-full max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-md my-10">
         <div className="text-lg font-semibold mb-6 flex items-center gap-2 bg-blue-500 text-white p-2 rounded-md">
           <FileText className="w-5 h-5" />

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useAuth, AuthProvider } from "./context/authContext";
 
 import SignUp from "./pages/SignUp";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
 import CourriersTable from "./pages/mails_arrived";
@@ -16,6 +16,10 @@ import EntitesOrigineTable from "./pages/EntitesOrigineTable";
 import CreateEntiteOrigine from "./pages/CreateEntiteOrigine";
 import CourrierDetails from "./pages/CourrierDetails";
 import UsersList from "./pages/Users/UsersList";
+
+import SearchForm from "./pages/Recherche/SearchForm";
+
+
 function App() {
   const { isAuthenticated, login } = useAuth();
 
@@ -30,6 +34,7 @@ function App() {
     <Router>
       <Navbar isAuthenticated={isAuthenticated} />
       <Routes>
+      <Route path="/Recherche" element={<SearchForm />} />
         <Route path="/courrierDetails/:id" element={<CourrierDetails />} />
         <Route path="/CourriersTable" element={<CourriersTable />} />
         <Route path="/CreateNewArrivee" element={<CreateNewArrivee />} />

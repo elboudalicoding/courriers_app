@@ -36,6 +36,55 @@ exports.getCourriers = async (req, res) => {
     });
   }
 };
+exports.getCourriersArrivee = async (req, res) => {
+  try {
+    const courriers = await Courrier.getCourriersArrivee();
+    res.status(200).json(courriers);
+  } catch (error) {
+    console.error("❌ Error fetching courriers:", error.message);
+    res.status(500).json({
+      message: "Error fetching courriers in <courrierController.js>",
+    });
+  }
+};
+exports.getCourriersCherchees = async (req, res) => {
+  // Récupérer les paramètres de la requête
+  const { dateDebut, dateFin, expediteur, objet } = req.query;
+
+  try {
+    // Construire les filtres pour la recherche
+    const filters = {
+      dateDebut: dateDebut ? new Date(dateDebut) : undefined,
+      dateFin: dateFin ? new Date(dateFin) : undefined,
+      expediteur: expediteur || undefined,
+      objet: objet ? { $regex: objet, $options: "i" } : undefined
+    };
+
+    console.log("Filtres : ", filters); // Ajout du journal de débogage
+
+    // Appeler la fonction du modèle pour récupérer les courriers
+    const courriers = await Courrier.getCourriersCherchees(filters);
+
+    console.log("Résultats : ", courriers); // Ajout du journal de débogage
+
+    // Vérifie si des courriers ont été trouvés
+    if (!courriers || courriers.length === 0) {
+      return res.status(404).json({ message: "Aucun courrier trouvé avec ces critères." });
+    }
+
+    // Renvoi des résultats
+    res.json(courriers);
+  } catch (err) {
+    res.status(500).json({ message: "Erreur du serveur" });
+  }
+};
+
+
+
+
+
+
+
 
 exports.downloadFile = async (req, res) => {
   try {
