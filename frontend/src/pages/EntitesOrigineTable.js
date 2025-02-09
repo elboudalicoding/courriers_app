@@ -62,7 +62,7 @@ const EntitesOrigineTable = ({ onNavClick }) => {
           onClick={() => onNavClick("createEntiteOrigine")}
           className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-6 rounded"
         >
-          Créer Nouveau Départ
+          Créer Nouveau Etablissement
         </button>
       </div>
       <div className="overflow-x-auto">
