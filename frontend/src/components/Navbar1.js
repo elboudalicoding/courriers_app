@@ -55,13 +55,20 @@ export default function Navbar1({ onNavClick }) {
           <BarChart className="w-5 h-5" />
           <span>Statistiques</span>
         </Link>
-        <Link
-          to="/recherche"
+        <button
+          onClick={() => onNavClick("searchForm")}
           className="flex items-center space-x-2 hover:text-gray-300"
         >
           <Search className="w-5 h-5" />
           <span>Recherche</span>
-        </Link>
+        </button>
+        <button
+          onClick={() => onNavClick("userList")}
+          className="flex items-center space-x-2 hover:text-gray-300"
+        >
+          <User className="w-5 h-5" />
+          <span>Users</span>
+        </button>
         <Link
           to="/profile"
           className="flex items-center space-x-2 hover:text-gray-300"

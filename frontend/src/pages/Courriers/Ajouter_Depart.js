@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import { FileText, Plus } from "lucide-react";
 import { creerDepart } from "../../utils/api"; // Import de l'API
 
-const CreerDepartForm = () => {
+const CreerDepartForm = ({ onNavClick }) => {
   const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
   const [showModal, setShowModal] = useState(false);
   const [newDestination, setNewDestination] = useState("");
@@ -48,8 +48,8 @@ const CreerDepartForm = () => {
 
     try {
       await creerDepart(form); // Utilise la méthode API pour envoyer le formData
-      alert("Départ créé avec succès !");
-      navigate("/dashboard"); // Redirection vers la table des départs
+
+      onNavClick("depart"); // Redirection vers la table des départs
     } catch (error) {
       alert("Erreur lors de la création du départ.");
     }
@@ -62,8 +62,8 @@ const CreerDepartForm = () => {
     }
 
     console.log("Nouvelle destination ajoutée :", newDestination);
-    setShowModal(false);  // Fermer le modal après ajout
-    setNewDestination("");  // Réinitialiser le champ de destination
+    setShowModal(false); // Fermer le modal après ajout
+    setNewDestination(""); // Réinitialiser le champ de destination
   };
 
   return (
@@ -74,15 +74,25 @@ const CreerDepartForm = () => {
           Créer un Départ
         </div>
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Signé par *
               </label>
-              <select name="signePar" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md">
+              <select
+                name="signePar"
+                onChange={handleChange}
+                className="w-full px-3 py-1.5 border rounded-md"
+              >
                 <option value="">-- Sélectionner --</option>
-                <option value="option1">Option 1</option>
+                <option value="Directeur">Directeur</option>
+                <option value="ResponsableInfo">
+                  Responsable-informatique
+                </option>
               </select>
             </div>
 
@@ -90,21 +100,36 @@ const CreerDepartForm = () => {
               <label className="block text-sm font-medium text-gray-700">
                 Numéro d'ordre *
               </label>
-              <input type="text" name="numeroOrdre" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md" />
+              <input
+                type="text"
+                name="numeroOrdre"
+                onChange={handleChange}
+                className="w-full px-3 py-1.5 border rounded-md"
+              />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Objet *
               </label>
-              <input type="text" name="objet" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md" />
+              <input
+                type="text"
+                name="objet"
+                onChange={handleChange}
+                className="w-full px-3 py-1.5 border rounded-md"
+              />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Fichier *
               </label>
-              <input type="file" name="file" onChange={handleFileChange} className="w-full px-3 py-1.5 border rounded-md" />
+              <input
+                type="file"
+                name="file"
+                onChange={handleFileChange}
+                className="w-full px-3 py-1.5 border rounded-md"
+              />
             </div>
           </div>
 
@@ -113,9 +138,13 @@ const CreerDepartForm = () => {
               <label className="block text-sm font-medium text-gray-700">
                 Traité par *
               </label>
-              <select name="traitePar" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md">
+              <select
+                name="traitePar"
+                onChange={handleChange}
+                className="w-full px-3 py-1.5 border rounded-md"
+              >
                 <option value="">-- Sélectionner --</option>
-                <option value="option1">Option 1</option>
+                <option value="Directeur">Directeur</option>
               </select>
             </div>
 
@@ -123,7 +152,12 @@ const CreerDepartForm = () => {
               <label className="block text-sm font-medium text-gray-700">
                 Date & Heure
               </label>
-              <input type="datetime-local" name="dateHeure" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md" />
+              <input
+                type="datetime-local"
+                name="dateHeure"
+                onChange={handleChange}
+                className="w-full px-3 py-1.5 border rounded-md"
+              />
             </div>
 
             <div>
@@ -131,11 +165,21 @@ const CreerDepartForm = () => {
                 Destination *
               </label>
               <div className="flex gap-2">
-                <select name="destination" onChange={handleChange} className="flex-1 px-3 py-1.5 border rounded-md">
+                <select
+                  name="destination"
+                  onChange={handleChange}
+                  className="flex-1 px-3 py-1.5 border rounded-md"
+                >
                   <option value="">Sélectionner une Destination</option>
-                  <option value="dest1">Destination 1</option>
+                  <option value="Ensa">Ensa</option>
+                  <option value="ENCG">ENCG</option>
+                  <option value="FSH">FSH</option>
                 </select>
-                <button type="button" onClick={() => setShowModal(true)} className="px-2 py-2 border rounded-md hover:bg-gray-50">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(true)}
+                  className="px-2 py-2 border rounded-md hover:bg-gray-50"
+                >
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
@@ -145,12 +189,20 @@ const CreerDepartForm = () => {
               <label className="block text-sm font-medium text-gray-700">
                 Nombre de Fichiers *
               </label>
-              <input type="number" name="nombreFichiers" onChange={handleChange} className="w-full px-3 py-1.5 border rounded-md" />
+              <input
+                type="number"
+                name="nombreFichiers"
+                onChange={handleChange}
+                className="w-full px-3 py-1.5 border rounded-md"
+              />
             </div>
           </div>
 
           <div className="mt-6 flex justify-center col-span-2">
-            <button type="submit" className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md">
+            <button
+              type="submit"
+              className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md"
+            >
               Créer
             </button>
           </div>
@@ -159,12 +211,28 @@ const CreerDepartForm = () => {
         {showModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-6 rounded-lg w-96">
-              <h3 className="text-lg font-semibold mb-4">Ajouter une nouvelle destination</h3>
-              <input type="text" value={newDestination} onChange={(e) => setNewDestination(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md mb-4" />
+              <h3 className="text-lg font-semibold mb-4">
+                Ajouter une nouvelle destination
+              </h3>
+              <input
+                type="text"
+                value={newDestination}
+                onChange={(e) => setNewDestination(e.target.value)}
+                className="w-full px-3 py-2 border rounded-md mb-4"
+              />
               <div className="flex justify-end gap-2">
-                <button onClick={() => setShowModal(false)} className="px-4 py-2 border rounded-md">Annuler</button>
-                <button onClick={handleAddDestination} className="px-4 py-2 bg-green-600 text-white rounded-md">Ajouter</button>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 border rounded-md"
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={handleAddDestination}
+                  className="px-4 py-2 bg-green-600 text-white rounded-md"
+                >
+                  Ajouter
+                </button>
               </div>
             </div>
           </div>

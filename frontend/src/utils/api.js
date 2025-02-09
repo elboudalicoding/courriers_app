@@ -239,6 +239,14 @@ export const createUser = async (user) => {
 export const deleteUser = async (id) => {
   try {
     const response = await API.delete(`/users/${id}`);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,deleteUser function")
+    );
+  }
+};
 // Fetch Courrier Details function
 export const fetchCourrierDetailsDepart = async (id) => {
   try {
@@ -254,11 +262,15 @@ export const fetchCourrierDetailsDepart = async (id) => {
 export const updateUser = async (id, user) => {
   try {
     const response = await API.put(`/users/${id}`, user);
-
-      new Error("Network error <api.js> ,fetchCourrierDetails function")
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,updateUser function")
     );
   }
 };
+
 // Fetch Courrier Details function
 export const DetailsDepart = async (id) => {
   try {
@@ -294,10 +306,15 @@ export const sendMail = async (mailData) => {
     );
   }
 };
+// Fetch User Mails
 export const fetchUserMails = async (userId) => {
   try {
     const response = await API.get(`/mails/${userId}`);
-      new Error("Network error <api.js> ,fetchCourrierDetails function")
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchUserMails function")
     );
   }
 };
@@ -307,53 +324,58 @@ export const onSearchArrivees = async (filtres) => {
   try {
     // Convertir les filtres en paramètres d'URL
     const params = new URLSearchParams();
-    if (filtres.dateFrom) params.append('dateDebut', filtres.dateFrom); 
-    if (filtres.dateTo) params.append('dateFin', filtres.dateTo);       
-    if (filtres.etablissement) params.append('expediteur', filtres.etablissement); 
-    if (filtres.objet) params.append('objet', filtres.objet);
-  //  console.log("Paramètres de la requête :", params.toString());
+    if (filtres.dateFrom) params.append("dateDebut", filtres.dateFrom);
+    if (filtres.dateTo) params.append("dateFin", filtres.dateTo);
+    if (filtres.etablissement)
+      params.append("expediteur", filtres.etablissement);
+    if (filtres.objet) params.append("objet", filtres.objet);
+    //  console.log("Paramètres de la requête :", params.toString());
     //console.log("Valeur de filtres.objet :", filtres.objet);
 
     // Construire la requête avec les paramètres
     const queryString = params.toString();
     const response = await API.get(`/courriers/search?${queryString}`);
-    
+
     // Ajoutez cette ligne pour inspecter la réponse
-  //  console.log("✅ Réponse du serveur :", response.data);
-    
+    //  console.log("✅ Réponse du serveur :", response.data);
+
     return response.data; // Retourne les données de la réponse
   } catch (error) {
-    console.error('Erreur recherche arrivées:', error);
+    console.error("Erreur recherche arrivées:", error);
     // Gérer les erreurs et renvoyer une réponse utilisateur
-    throw error.response?.data || { error: 'Erreur réseau' };
+    throw error.response?.data || { error: "Erreur réseau" };
   }
 };
 
-
-
-// Fetch Courriers function
+// Fetch Courriers function// Search Departs
 export const onSearchDeparts = async (filtres) => {
   try {
     const params = new URLSearchParams();
-    if (filtres.dateFrom) params.append('dateDebut', filtres.dateFrom); 
-    if (filtres.dateTo) params.append('dateFin', filtres.dateTo);     
-    if (filtres.etablissement) params.append('expediteur', filtres.etablissement);
-    if (filtres.objet) params.append('objet', filtres.objet);
-   console.log("Paramètres de la requête :", params.toString());
-   console.log("Valeur de filtres.objet :", filtres.objet);
+    if (filtres.dateFrom) params.append("dateDebut", filtres.dateFrom);
+    if (filtres.dateTo) params.append("dateFin", filtres.dateTo);
+    if (filtres.etablissement)
+      params.append("expediteur", filtres.etablissement);
+    if (filtres.objet) params.append("objet", filtres.objet);
 
-    // Construire la requête avec les paramètres
-    const queryString1 = params.toString();
-    const response = await API.get(`/depart/search?${queryString1}`);
-   
+    const queryString = params.toString();
+    const response = await API.get(`/depart/search?${queryString}`);
+
+    return response.data;
+  } catch (error) {
+    console.error("Erreur recherche départs:", error);
+    throw error.response?.data || { error: "Erreur réseau" };
+  }
+};
+export const updateEntiteOrigine = async (id, entiteOrigine) => {
+  try {
+    const response = await API.put(`/entites_origine/${id}`, entiteOrigine);
     return response.data;
   } catch (error) {
     throw (
       error.response?.data ||
-      new Error("Network error <api.js> ,fetchUserMails function")
-
-      new Error("Network error <api.js> ,fetchCourriers function")
+      new Error("Network error <api.js> ,updateEntiteOrigine function")
     );
   }
 };
+
 export default API;

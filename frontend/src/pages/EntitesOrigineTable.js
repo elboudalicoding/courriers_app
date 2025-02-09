@@ -1,58 +1,81 @@
-import { useState, useEffect } from "react";
-import { Button } from "../components/ui/buttton";
-import { useNavigate } from "react-router-dom";
-import { fetchEntitesOrigine } from "../utils/api";
+import React, { useState, useEffect } from "react";
+import { fetchEntitesOrigine, updateEntiteOrigine } from "../utils/api";
+import Modal from "../components/Modal";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
 
 const EntitesOrigineTable = ({ onNavClick }) => {
   const [etablissements, setEtablissements] = useState([]);
-  const navigate = useNavigate();
+  const [selectedEtablissement, setSelectedEtablissement] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const getEntitesOrigine = async () => {
+    const getEtablissements = async () => {
       try {
         const data = await fetchEntitesOrigine();
         setEtablissements(data);
       } catch (error) {
-        console.error("❌ Error fetching entites origine:", error);
+        console.error("Error fetching entites origine:", error);
       }
     };
 
-    getEntitesOrigine();
+    getEtablissements();
   }, []);
 
-  const handleButtonClick = () => {
-    onNavClick("createEntiteOrigine");
+  const handleEditClick = (etab) => {
+    setSelectedEtablissement(etab);
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedEtablissement(null);
+  };
+
+  const handleSave = async () => {
+    try {
+      await updateEntiteOrigine(
+        selectedEtablissement.id,
+        selectedEtablissement
+      );
+      const updatedEtablissements = await fetchEntitesOrigine();
+      setEtablissements(updatedEtablissements);
+      handleModalClose();
+    } catch (error) {
+      console.error("Error updating entite origine:", error);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedEtablissement((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center bg-blue-900 text-white p-4 rounded-t-lg">
-        <h2 className="text-lg font-semibold">📋 Liste des Établissements</h2>
-        <Button
-          onClick={handleButtonClick}
-          className="bg-green-500 px-4 py-2 rounded text-white hover:bg-green-600"
+    <div className="p-6 bg-white shadow-md rounded-lg">
+      <div className="flex justify-between items-center bg-blue-800 text-white rounded-t-lg px-6 py-3 mb-6">
+        <h2 className="text-xl font-semibold mb-4">
+          Liste des Entités d'Origine
+        </h2>
+        <button
+          onClick={() => onNavClick("createEntiteOrigine")}
+          className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-6 rounded"
         >
-          ➕ Ajouter un Établissement
-        </Button>
+          Créer Nouveau Etablissement
+        </button>
       </div>
-
       <div className="overflow-x-auto">
-        <table className="w-full bg-white border border-gray-200">
-          <thead className="bg-gray-100">
+        <table className="min-w-full bg-white">
+          <thead>
             <tr>
-              {[
-                "ID",
-                "Nom",
-                "Ville",
-                "Contact",
-                "Fax",
-                "Adresse",
-                "Actions",
-              ].map((header) => (
-                <th key={header} className="px-4 py-2 border">
-                  {header}
-                </th>
-              ))}
+              <th className="px-4 py-2">ID</th>
+              <th className="px-4 py-2">Nom</th>
+              <th className="px-4 py-2">Ville</th>
+              <th className="px-4 py-2">Contact</th>
+              <th className="px-4 py-2">Fax</th>
+              <th className="px-4 py-2">Adresse</th>
+              <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -68,7 +91,10 @@ const EntitesOrigineTable = ({ onNavClick }) => {
                   <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
                     Voir
                   </button>
-                  <button className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
+                  <button
+                    className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                    onClick={() => handleEditClick(etab)}
+                  >
                     Modifier
                   </button>
                 </td>
@@ -77,6 +103,66 @@ const EntitesOrigineTable = ({ onNavClick }) => {
           </tbody>
         </table>
       </div>
+
+      {isModalOpen && (
+        <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+          <div className="p-6 bg-white rounded-lg">
+            <h2 className="text-xl font-semibold mb-4">
+              Modifier Entité d'Origine
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block font-semibold">Nom</label>
+                <Input
+                  name="nom"
+                  value={selectedEtablissement.nom}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label className="block font-semibold">Ville</label>
+                <Input
+                  name="ville"
+                  value={selectedEtablissement.ville}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label className="block font-semibold">Contact</label>
+                <Input
+                  name="contact"
+                  value={selectedEtablissement.contact}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label className="block font-semibold">Fax</label>
+                <Input
+                  name="fax"
+                  value={selectedEtablissement.fax}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label className="block font-semibold">Adresse</label>
+                <Textarea
+                  name="adresse"
+                  value={selectedEtablissement.adresse}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="flex justify-end space-x-2 mt-4">
+              <Button variant="outline" onClick={handleModalClose}>
+                Annuler
+              </Button>
+              <Button className="bg-blue-500 text-white" onClick={handleSave}>
+                Enregistrer
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

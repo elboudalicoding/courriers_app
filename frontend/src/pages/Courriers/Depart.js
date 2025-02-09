@@ -8,7 +8,7 @@ import {
 import CourrierDetailsDepart from "./Courrier_Depart_Details";
 import Modal from "../../components/Modal";
 
-const Depart = ({ id }) => {
+const Depart = ({ id ,onNavClick}) => {
   const [courrier, setCourrier] = useState(null);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,12 +59,12 @@ const Depart = ({ id }) => {
         <div className="flex justify-between items-center bg-blue-800 text-white rounded-t-lg px-6 py-3 mb-6">
           <h2 className="text-2xl font-bold">Liste des Courriers Départs</h2>
           {/* Lien vers la page AjouterDepart */}
-          <Link
-            to="/cdepart"
+          <button
+            onClick={() => onNavClick("ajouterDepart")}
             className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-6 rounded"
           >
             Créer Nouveau Départ
-          </Link>
+          </button>
         </div>
 
         {/* Deuxième ligne : Tableau */}

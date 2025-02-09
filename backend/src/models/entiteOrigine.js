@@ -38,6 +38,30 @@ class EntiteOrigine {
       throw new Error("Database error");
     }
   }
+  static async updateEntiteOrigine(id, data) {
+    const query = `
+      UPDATE entites_origine
+      SET nom = ?, ville = ?, contact = ?, fax = ?, adresse = ?
+      WHERE id = ?;
+    `;
+
+    const values = [
+      data.nom,
+      data.ville,
+      data.contact,
+      data.fax,
+      data.adresse,
+      id,
+    ];
+
+    try {
+      await db.execute(query, values);
+      return { id, ...data };
+    } catch (error) {
+      console.error("❌ Error updating entite origine:", error);
+      throw new Error("Database error");
+    }
+  }
 }
 
 module.exports = EntiteOrigine;

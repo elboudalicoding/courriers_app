@@ -8,9 +8,9 @@ const Navbar = ({ onLogout }) => {
     <nav>
       <div>
         {isAuth ? (
-          <button onClick={onLogout}>Logout</button> // Trigger logout from props
+          <button onClick={onLogout}></button> // Trigger logout from props
         ) : (
-          <button>Login</button>
+          <button></button>
         )}
       </div>
     </nav>
