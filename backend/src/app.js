@@ -8,7 +8,7 @@ const entiteOrigineRoutes = require("./routes/entiteOrigineRoutes");
 const userRoutes = require("./routes/userRoutes");
 const errorHandler = require("./middlewares/errorHandler");
 const userMailRoutes = require("./routes/userMailRoutes");
-
+const courrRoutes = require("./routes/courrRoutes");
 const app = express();
 const upload = multer();
 
@@ -26,7 +26,7 @@ app.use("/api/depart", upload.single("file"), departRoutes);
 app.use("/api/entites_origine", entiteOrigineRoutes);
 app.use("/api", userRoutes); // Add user routes
 app.use("/api/mails", userMailRoutes); // Add user mail routes
-
+app.use("/api/cad", courrRoutes); 
 // Error handler middleware should be used after all routes
 app.use(errorHandler);
 

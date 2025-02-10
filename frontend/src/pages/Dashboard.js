@@ -10,6 +10,7 @@ import CreateEntiteOrigine from "./CreateEntiteOrigine";
 import SearchForm from "./Recherche/SearchForm"; // Importez le composant SearchForm
 import UserList from "./Users/UsersList";
 import Ajouter_Depart from "./Courriers/Ajouter_Depart"
+import Statistiques from "./Statistisques";
 const Dashboard = () => {
   const [activeComponent, setActiveComponent] = useState("dashboard");
 
@@ -53,6 +54,9 @@ const Dashboard = () => {
         )}
         {activeComponent === "ajouterDepart" && (
           <Ajouter_Depart onNavClick={handleNavClick} />
+        )}
+         {activeComponent === "statistique" && (
+          <Statistiques onNavClick={handleNavClick} />
         )}
         {/* Ajout de la ligne */}
       </div>
