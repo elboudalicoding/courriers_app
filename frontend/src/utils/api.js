@@ -17,7 +17,18 @@ API.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
+//fecthCourriersAD
+export const fetchCourriersAD = async () => {
+  try {
+    const response = await API.get("/cad");
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchCourriers function")
+    );
+  }
+};
 // Login function
 export const login = async (credentials) => {
   try {
