@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { login } from "../utils/api";
 import { saveToken } from "../utils/auth";
@@ -32,12 +32,14 @@ function Login() {
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
+          className="mx-auto h-20 w-20"
+          width={80}
+          height={80}
+          src="/images/login-icon.png"
+          alt="Login Icon"
         />
         <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
-          Sign in to your account
+          Login
         </h2>
       </div>
 
@@ -87,12 +89,12 @@ function Login() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-500">
+        {/* <p className="mt-6 text-center text-sm text-gray-500">
           Don't have an account?{" "}
           <Link to="/signup" className="text-indigo-600 hover:text-indigo-500">
             Sign up
           </Link>
-        </p>
+        </p> */}
       </div>
     </div>
   );

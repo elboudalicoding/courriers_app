@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Home,
   Mail,
@@ -8,8 +8,17 @@ import {
   User,
   LogOut,
 } from "lucide-react";
+import { useAuth } from "../context/authContext";
 
 export default function Navbar1({ onNavClick }) {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <nav className="flex items-center justify-between bg-gradient-to-r from-blue-300 to-blue-300 text-white p-4 shadow-lg">
       {/* Logo */}
@@ -80,7 +89,10 @@ export default function Navbar1({ onNavClick }) {
 
       {/* Admin Dropdown */}
       <div className="relative">
-        <button className="flex items-center space-x-2 px-4 py-2 border rounded-lg bg-gray-800 hover:bg-gray-700 text-sm">
+        <button
+          onClick={handleLogout}
+          className="flex items-center space-x-2 px-4 py-2 border rounded-lg bg-gray-800 hover:bg-gray-700 text-sm"
+        >
           <User className="w-5 h-5" />
           <span>Admin</span>
           <span className="ml-2">

@@ -86,6 +86,17 @@ class User {
       throw new Error("Database error");
     }
   }
+  //fetching user by email and password 
+  static async findByEmail(email) {
+    const query = "SELECT * FROM users WHERE email = ?";
+    try {
+      const [rows] = await db.execute(query, [email]);
+      return rows[0];
+    } catch (error) {
+      console.error("❌ Error fetching user by email:", error);
+      throw new Error("Database error");
+    }
+  }
 }
 
 
