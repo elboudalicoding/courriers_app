@@ -18,21 +18,6 @@ API.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Signup function
-export const signup = async (userData) => {
-  try {
-    const response = await API.post("/auth/signup", userData);
-    console.log("✅ Server response:", response.data);
-    return response.data;
-  } catch (error) {
-    throw (
-      error.response?.data || {
-        error: "Network error <api.js> ,signup function",
-      }
-    );
-  }
-};
-
 // Login function
 export const login = async (credentials) => {
   try {
