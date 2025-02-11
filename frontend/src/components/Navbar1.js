@@ -57,13 +57,14 @@ export default function Navbar1({ onNavClick }) {
           <School className="w-5 h-5" />
           <span>Établissements</span>
         </button>
-        <Link
-          to="/statistiques"
+        <button
+          onClick={() => onNavClick("statistique")}
           className="flex items-center space-x-2 hover:text-gray-300"
         >
           <BarChart className="w-5 h-5" />
           <span>Statistiques</span>
-        </Link>
+        </button>
+        
         <button
           onClick={() => onNavClick("searchForm")}
           className="flex items-center space-x-2 hover:text-gray-300"
