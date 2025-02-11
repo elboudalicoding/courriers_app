@@ -6,10 +6,9 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useAuth, AuthProvider } from "./context/authContext";
-
+import UserMails from "./pages/Courriers/userMails";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Navbar1 from "./components/Navbar1";
 
 function App() {
   const { isAuthenticated, login } = useAuth();
@@ -32,6 +31,7 @@ function App() {
           path="/dashboard"
           element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
         />
+        <Route path="/userMails/:userId" element={isAuthenticated ? <UserMails /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );
