@@ -6,11 +6,25 @@ import { saveAs } from 'file-saver';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 
-// Initialisation des polices par défaut
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
-// Ajouter la police Roboto-Medium en base64
-pdfMake.vfs["Roboto-Medium.ttf"] = "<CONTENU_BASE64_DE_LA_POLICE>"; // Remplace par le contenu base64 de la police
+// Tentative d'initialisation de pdfMake et gestion des erreurs
+let pdfInitialized = false;
+try {
+  // Configuration des polices pdfMake (en utilisant Roboto)
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  
+  pdfMake.fonts = {
+    Roboto: {
+      normal: 'Roboto-Regular',
+      bold: 'Roboto-Bold',
+      italics: 'Roboto-Italic',
+      bolditalics: 'Roboto-BoldItalic'
+    }
+  };
+  pdfInitialized = true;
+} catch (err) {
+  console.error('Erreur d\'initialisation de pdfMake:', err);
+  pdfInitialized = false;
+}
 
 const Statistiques = ({ onNavClick }) => {
   const [dailyData, setDailyData] = useState([]);
@@ -59,84 +73,94 @@ const Statistiques = ({ onNavClick }) => {
     fetchData();
   }, []);
 
-  // Fonction pour formater les dates
-  const formatDate = (date) => new Date(date).toLocaleDateString('fr-FR');
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('fr-FR');
+  };
 
-  // Vérification des états (loading, erreur, pas de données)
+  const generatePDF = () => {
+    try {
+      if (!pdfInitialized) {
+        alert('Erreur d\'initialisation de pdfMake. Le PDF ne peut pas être généré.');
+        return;
+      }
+      const docDefinition = {
+        content: [
+          { text: '📊 Rapport Statistiques', style: 'header' },
+          { text: '\nStatistiques Mensuelles', style: 'subheader' },
+          {
+            table: {
+              headerRows: 1,
+              widths: ['*', '*', '*'],
+              body: [
+                [{ text: 'Date', style: 'tableHeader' }, 
+                 { text: 'Arrivées', style: 'tableHeader' }, 
+                 { text: 'Départs', style: 'tableHeader' }],
+                ...monthlyData.map(row => [
+                  row.date,
+                  row.arrivees.toString(),
+                  row.departs.toString()
+                ])
+              ]
+            },
+            layout: 'lightHorizontalLines'
+          },
+          { text: '\n10 Derniers Jours', style: 'subheader', margin: [0, 20, 0, 10] },
+          {
+            table: {
+              headerRows: 1,
+              widths: ['*', '*', '*'],
+              body: [
+                [{ text: 'Date', style: 'tableHeader' }, 
+                 { text: 'Arrivées', style: 'tableHeader' }, 
+                 { text: 'Départs', style: 'tableHeader' }],
+                ...dailyData.map(row => [
+                  formatDate(row.date),
+                  row.arrivees.toString(),
+                  row.departs.toString()
+                ])
+              ]
+            },
+            layout: 'lightHorizontalLines'
+          }
+        ],
+        styles: {
+          header: { fontSize: 18, bold: true, font: 'Roboto', alignment: 'center', margin: [0, 0, 0, 20] },
+          subheader: { fontSize: 14, bold: true, font: 'Roboto', margin: [0, 10, 0, 5] },
+          tableHeader: { bold: true, fillColor: '#f3f4f6', font: 'Roboto' }
+        },
+        defaultStyle: {
+          fontSize: 10
+        }
+      };
+
+      pdfMake.createPdf(docDefinition).download('Statistiques.pdf');
+    } catch (err) {
+      console.error('Erreur lors de la génération du PDF:', err);
+      alert('Erreur lors de la génération du PDF. Veuillez réessayer.');
+    }
+  };
+
+  const generateExcel = () => {
+    try {
+      const ws = XLSX.utils.json_to_sheet(monthlyData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Statistiques');
+      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      saveAs(data, 'statistiques.xlsx');
+    } catch (err) {
+      console.error('Erreur lors de la génération Excel:', err);
+      alert('Erreur lors de la génération Excel. Veuillez réessayer.');
+    }
+  };
+
   if (loading) {
-    return (
-      <div className="flex items-center justify-center p-6">
-        <p className="text-gray-600">Chargement des données...</p>
-      </div>
-    );
+    return <div className="p-6">Chargement...</div>;
   }
 
   if (error) {
-    return (
-      <div className="p-6">
-        <p className="text-red-600">Erreur : {error}</p>
-        <button 
-          onClick={fetchData} 
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
-        >
-          Réessayer
-        </button>
-      </div>
-    );
+    return <div className="p-6 text-red-500">Erreur: {error}</div>;
   }
-
-  if (!dailyData.length) {
-    return (
-      <div className="p-6">
-        <p className="text-gray-600">Aucune donnée disponible</p>
-        <button 
-          onClick={fetchData} 
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
-        >
-          Actualiser
-        </button>
-      </div>
-    );
-  }
-
-  // Fonction pour générer le PDF
-  const generatePDF = () => {
-    const docDefinition = {
-      content: [
-        { text: 'Statistiques des Arrivées et Départs', style: 'header' },
-        {
-          table: {
-            body: [
-              ['Date', 'Arrivées', 'Départs'],
-              ...monthlyData.map(item => [item.date, item.arrivees, item.departs]),
-            ]
-          }
-        }
-      ],
-      styles: {
-        header: {
-          fontSize: 18,
-          bold: true,
-          alignment: 'center',
-          font: 'Roboto-Medium', // Utilisation de la police Roboto-Medium
-        }
-      },
-      defaultStyle: {
-        font: 'Roboto-Medium', // Police par défaut
-      }
-    };
-    pdfMake.createPdf(docDefinition).download('statistiques.pdf');
-  };
-
-  // Fonction pour générer le fichier Excel
-  const generateExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(monthlyData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Statistiques');
-    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const data = new Blob([excelBuffer], { bookType: 'xlsx', type: 'application/octet-stream' });
-    saveAs(data, 'statistiques.xlsx');
-  };
 
   return (
     <div className="p-6">
