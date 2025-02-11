@@ -4,27 +4,31 @@ const nodemailer = require("nodemailer");
 
 exports.sendMail = async (req, res) => {
   try {
-    const { username, note } = req.body;
+    const { username, note, courrierId } = req.body;
     const user = await User.findByUsername(username);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const newMail = await UserMail.createMail({ userId: user.id, note });
+    const newMail = await UserMail.createMail({
+      userId: user.id,
+      note,
+      courrierId,
+    });
 
     // Send email with link
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
-        user: 'oussamaelboudali691@gmail.com',
-        pass: 'elboussamainfo2003'
-      }
+        user: "oussamaelboudali691@gmail.com",
+        pass: "xqaq enpl bmhu fprs", // Use the generated app password here
+      },
     });
 
     const mailOptions = {
-      from: 'oussamaelboudali691@gmail.com',
+      from: "oussamaelboudali691@gmail.com",
       to: user.email,
-      subject: 'New Mail Notification',
-      text: `You have a new mail. Click the link to view: http://localhost:3000/userMails/${user.id}`
+      subject: "New Mail Notification",
+      text: `You have a new mail. Click the link to view: http://localhost:3000/userMails/${user.id}`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -32,7 +36,7 @@ exports.sendMail = async (req, res) => {
         console.error("❌ Error sending email:", error);
         return res.status(500).json({ message: "Error sending email" });
       }
-      console.log('Email sent: ' + info.response);
+      console.log("Email sent: " + info.response);
     });
 
     res.status(200).json({ message: "Mail sent successfully", mail: newMail });
