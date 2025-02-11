@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Importer useNavigate
 import { FileText, Plus } from "lucide-react";
-import { creerDepart } from "../../utils/api"; // Import de l'API
+import { creerDepart, fetchUserNames } from "../../utils/api"; // Import de l'API
 
 const CreerDepartForm = ({ onNavClick }) => {
   const navigate = useNavigate(); // Utiliser useNavigate pour la redirection
@@ -17,7 +17,15 @@ const CreerDepartForm = ({ onNavClick }) => {
     destination: "",
     nombreFichiers: 0,
   });
+  const [users, setUsers] = useState([]);
 
+useEffect(() => {
+  const loadUsers = async () => {
+    const fetchedUsers = await fetchUserNames();
+    setUsers(fetchedUsers);
+  };
+  loadUsers();
+}, []);
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     setFormData({
@@ -84,16 +92,18 @@ const CreerDepartForm = ({ onNavClick }) => {
                 Signé par *
               </label>
               <select
-                name="signePar"
-                onChange={handleChange}
-                className="w-full px-3 py-1.5 border rounded-md"
-              >
-                <option value="">-- Sélectionner --</option>
-                <option value="Directeur">Directeur</option>
-                <option value="ResponsableInfo">
-                  Responsable-informatique
+              name="signePar"
+              onChange={handleChange}
+               className="w-full px-3 py-1.5 border rounded-md"
+               >
+           <option value="">-- Sélectionner --</option>
+             {users.map((user) => (
+             <option key={user.id} value={user.nom}>
+                {user.nom}
                 </option>
-              </select>
+  ))}
+</select>
+
             </div>
 
             <div>
@@ -139,13 +149,18 @@ const CreerDepartForm = ({ onNavClick }) => {
                 Traité par *
               </label>
               <select
-                name="traitePar"
-                onChange={handleChange}
-                className="w-full px-3 py-1.5 border rounded-md"
-              >
+                 name="traitePar"
+                  onChange={handleChange}
+                   className="w-full px-3 py-1.5 border rounded-md"
+               >
                 <option value="">-- Sélectionner --</option>
-                <option value="Directeur">Directeur</option>
-              </select>
+                 {users.map((user) => (
+                  <option key={user.id} value={user.nom}>
+                   {user.nom}
+                   </option>
+  ))}
+</select>
+
             </div>
 
             <div>

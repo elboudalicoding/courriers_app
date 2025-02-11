@@ -29,6 +29,18 @@ export const fetchCourriersAD = async () => {
     );
   }
 };
+//get Services
+export const getServices = async () => {
+  try {
+    const response = await API.get("/service");
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchCourriers function")
+    );
+  }
+};
 // Login function
 export const login = async (credentials) => {
   try {
@@ -314,7 +326,7 @@ export const fetchUserMails = async (userId) => {
     );
   }
 };
-// Fonction de recherche des arrivées
+
 // Fonction de recherche des arrivées
 export const onSearchArrivees = async (filtres) => {
   try {

@@ -10,6 +10,7 @@ import { useAuth, AuthProvider } from "./context/authContext";
 import Login from "./pages/login";
 import Dashboard from "./pages/Dashboard";
 import Navbar1 from "./components/Navbar1";
+import Service from "./pages/Service";
 
 function App() {
   const { isAuthenticated, login } = useAuth();
@@ -31,6 +32,10 @@ function App() {
         <Route
           path="/dashboard"
           element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
+        />
+         <Route
+          path="/service"
+          element={ <Service/> }
         />
       </Routes>
     </Router>
