@@ -88,21 +88,20 @@ export default function Navbar1({ onNavClick }) {
         </Link>
       </div>
 
-      {/* Admin Dropdown */}
+    
       <div className="relative">
         <button
           onClick={handleLogout}
           className="flex items-center space-x-2 px-4 py-2 border rounded-lg bg-gray-800 hover:bg-gray-700 text-sm"
         >
           <User className="w-5 h-5" />
-          <span>Admin</span>
+          <span>Déconnection</span>
           <span className="ml-2">
             <LogOut className="w-4 h-4" />{" "}
-            {/* Petite flèche ou icône pour déconnexion */}
+           
           </span>
         </button>
-        {/* Dropdown options (optionnel) */}
-        {/* Ajoutez un dropdown ici si nécessaire */}
+       
       </div>
     </nav>
   );

@@ -55,10 +55,10 @@ const Depart = ({ id ,onNavClick}) => {
   return (
     <>
       <div className="flex flex-col">
-        {/* Première ligne : Titre et Bouton */}
+       
         <div className="flex justify-between items-center bg-blue-800 text-white rounded-t-lg px-6 py-3 mb-6">
           <h2 className="text-2xl font-bold">Liste des Courriers Départs</h2>
-          {/* Lien vers la page AjouterDepart */}
+         
           <button
             onClick={() => onNavClick("ajouterDepart")}
             className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-6 rounded"
@@ -67,7 +67,7 @@ const Depart = ({ id ,onNavClick}) => {
           </button>
         </div>
 
-        {/* Deuxième ligne : Tableau */}
+       
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-300 text-base">
             <thead>

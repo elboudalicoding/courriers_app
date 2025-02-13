@@ -22,7 +22,7 @@ const Dashboard = () => {
     <div className="bg-gray-100 min-h-screen flex flex-col">
       <Navbar1 onNavClick={handleNavClick} />
 
-      {/* Contenu principal */}
+     
       <div className="flex-grow flex items-center justify-center">
         {activeComponent === "dashboard" && (
           <div className="bg-white p-4 rounded shadow-md">
@@ -58,7 +58,7 @@ const Dashboard = () => {
          {activeComponent === "statistique" && (
           <Statistiques onNavClick={handleNavClick} />
         )}
-        {/* Ajout de la ligne */}
+        
       </div>
 
       <Footer />
