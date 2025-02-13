@@ -29,18 +29,7 @@ export const fetchCourriersAD = async () => {
     );
   }
 };
-//get Services
-export const getServices = async () => {
-  try {
-    const response = await API.get("/service");
-    return response.data;
-  } catch (error) {
-    throw (
-      error.response?.data ||
-      new Error("Network error <api.js> ,fetchCourriers function")
-    );
-  }
-};
+
 // Login function
 export const login = async (credentials) => {
   try {
@@ -51,6 +40,62 @@ export const login = async (credentials) => {
     throw (
       error.response?.data ||
       new Error("Network error <api.js> ,login function")
+    );
+  }
+};
+// Service function
+export const createService = async (credentials) => {
+  try {
+    const response = await API.post("/service", credentials);
+    console.log("✅ Server response:", response.data);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,login function")
+    );
+  }
+};
+//delete service
+export const deleteService = async (id) => {
+  const response = await  API.delete(`/service/${id}`);
+    return response.json();
+};
+// getAll Sercices
+export const getAllServices = async () => {
+  try {
+    const response = await API.get("/service");
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,fetchCourriers function")
+    );
+  }
+};
+//getService(id)
+// Récupérer un service par ID
+export const getService = async (id) => {
+  try {
+    const response = await API.get(`/service/${id}`);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,getService function")
+    );
+  }
+};
+
+// Mettre à jour un service
+export const updateService = async (id, updatedService) => {
+  try {
+    const response = await API.put(`/service/${id}`, updatedService);
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data ||
+      new Error("Network error <api.js> ,updateService function")
     );
   }
 };

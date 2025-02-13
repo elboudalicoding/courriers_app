@@ -7,10 +7,14 @@ import {
 } from "react-router-dom";
 import { useAuth, AuthProvider } from "./context/authContext";
 
+import UserMails from "./pages/Courriers/userMails";
+
+
 import Login from "./pages/login";
 import Dashboard from "./pages/Dashboard";
 import Navbar1 from "./components/Navbar1";
 import Service from "./pages/Service";
+import  Home1  from "./pages/Home";
 
 function App() {
   const { isAuthenticated, login } = useAuth();
@@ -36,6 +40,10 @@ function App() {
          <Route
           path="/service"
           element={ <Service/> }
+        />
+         <Route
+          path="/home"
+          element={ <Home1/> }
         />
       </Routes>
     </Router>

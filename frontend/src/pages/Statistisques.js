@@ -3,28 +3,6 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } fro
 import { fetchCourriersAD } from '../utils/api';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-
-// Tentative d'initialisation de pdfMake et gestion des erreurs
-let pdfInitialized = false;
-try {
-  // Configuration des polices pdfMake (en utilisant Roboto)
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  
-  pdfMake.fonts = {
-    Roboto: {
-      normal: 'Roboto-Regular',
-      bold: 'Roboto-Bold',
-      italics: 'Roboto-Italic',
-      bolditalics: 'Roboto-BoldItalic'
-    }
-  };
-  pdfInitialized = true;
-} catch (err) {
-  console.error('Erreur d\'initialisation de pdfMake:', err);
-  pdfInitialized = false;
-}
 
 const Statistiques = ({ onNavClick }) => {
   const [dailyData, setDailyData] = useState([]);
@@ -32,7 +10,7 @@ const Statistiques = ({ onNavClick }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fonction pour traiter les données mensuelles
+  // Traiter les données mensuelles
   const processMonthlyData = (data) => {
     const monthlyStats = data.reduce((acc, curr) => {
       const month = curr.date.substring(0, 7);
@@ -46,13 +24,13 @@ const Statistiques = ({ onNavClick }) => {
     return Object.values(monthlyStats).sort((a, b) => a.date.localeCompare(b.date));
   };
 
-  // Fonction pour récupérer les données
+  // Récupérer les données
   const fetchData = () => {
     setLoading(true);
     setError(null);
-    
+
     fetchCourriersAD()
-      .then(response => {
+      .then((response) => {
         if (Array.isArray(response) && response.length > 0) {
           const sortedData = response.sort((a, b) => new Date(a.date) - new Date(b.date));
           setDailyData(sortedData.slice(-10));
@@ -61,7 +39,7 @@ const Statistiques = ({ onNavClick }) => {
           throw new Error('Aucune donnée disponible');
         }
       })
-      .catch(err => {
+      .catch((err) => {
         setError(err.message);
       })
       .finally(() => {
@@ -73,16 +51,19 @@ const Statistiques = ({ onNavClick }) => {
     fetchData();
   }, []);
 
+  // Formater une date
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('fr-FR');
   };
 
-  const generatePDF = () => {
+  // Générer un PDF (import dynamique)
+  const generatePDF = async () => {
     try {
-      if (!pdfInitialized) {
-        alert('Erreur d\'initialisation de pdfMake. Le PDF ne peut pas être généré.');
-        return;
-      }
+      const pdfMake = (await import('pdfmake/build/pdfmake')).default;
+      const pdfFonts = (await import('pdfmake/build/vfs_fonts')).default;
+
+      pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
       const docDefinition = {
         content: [
           { text: '📊 Rapport Statistiques', style: 'header' },
@@ -95,14 +76,14 @@ const Statistiques = ({ onNavClick }) => {
                 [{ text: 'Date', style: 'tableHeader' }, 
                  { text: 'Arrivées', style: 'tableHeader' }, 
                  { text: 'Départs', style: 'tableHeader' }],
-                ...monthlyData.map(row => [
+                ...monthlyData.map((row) => [
                   row.date,
                   row.arrivees.toString(),
-                  row.departs.toString()
-                ])
-              ]
+                  row.departs.toString(),
+                ]),
+              ],
             },
-            layout: 'lightHorizontalLines'
+            layout: 'lightHorizontalLines',
           },
           { text: '\n10 Derniers Jours', style: 'subheader', margin: [0, 20, 0, 10] },
           {
@@ -113,24 +94,22 @@ const Statistiques = ({ onNavClick }) => {
                 [{ text: 'Date', style: 'tableHeader' }, 
                  { text: 'Arrivées', style: 'tableHeader' }, 
                  { text: 'Départs', style: 'tableHeader' }],
-                ...dailyData.map(row => [
+                ...dailyData.map((row) => [
                   formatDate(row.date),
                   row.arrivees.toString(),
-                  row.departs.toString()
-                ])
-              ]
+                  row.departs.toString(),
+                ]),
+              ],
             },
-            layout: 'lightHorizontalLines'
-          }
+            layout: 'lightHorizontalLines',
+          },
         ],
         styles: {
-          header: { fontSize: 18, bold: true, font: 'Roboto', alignment: 'center', margin: [0, 0, 0, 20] },
-          subheader: { fontSize: 14, bold: true, font: 'Roboto', margin: [0, 10, 0, 5] },
-          tableHeader: { bold: true, fillColor: '#f3f4f6', font: 'Roboto' }
+          header: { fontSize: 18, bold: true, alignment: 'center', margin: [0, 0, 0, 20] },
+          subheader: { fontSize: 14, bold: true, margin: [0, 10, 0, 5] },
+          tableHeader: { bold: true, fillColor: '#f3f4f6' },
         },
-        defaultStyle: {
-          fontSize: 10
-        }
+        defaultStyle: { fontSize: 10 },
       };
 
       pdfMake.createPdf(docDefinition).download('Statistiques.pdf');
@@ -140,6 +119,7 @@ const Statistiques = ({ onNavClick }) => {
     }
   };
 
+  // Générer un fichier Excel
   const generateExcel = () => {
     try {
       const ws = XLSX.utils.json_to_sheet(monthlyData);
@@ -154,35 +134,21 @@ const Statistiques = ({ onNavClick }) => {
     }
   };
 
-  if (loading) {
-    return <div className="p-6">Chargement...</div>;
-  }
-
-  if (error) {
-    return <div className="p-6 text-red-500">Erreur: {error}</div>;
-  }
+  if (loading) return <div className="p-6">Chargement...</div>;
+  if (error) return <div className="p-6 text-red-500">Erreur: {error}</div>;
 
   return (
     <div className="p-6">
       <h2 className="text-xl font-bold mb-6">📊 Statistiques des Arrivées et Départs</h2>
-      
+
       <div className="flex gap-4 mb-6">
-        <button 
-          onClick={generatePDF} 
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow transition-colors"
-        >
+        <button onClick={generatePDF} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow">
           📄 Générer PDF
         </button>
-        <button 
-          onClick={generateExcel} 
-          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow transition-colors"
-        >
+        <button onClick={generateExcel} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow">
           📊 Générer Excel
         </button>
-        <button 
-          onClick={fetchData} 
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow transition-colors"
-        >
+        <button onClick={fetchData} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow">
           🔄 Actualiser
         </button>
       </div>
@@ -201,7 +167,7 @@ const Statistiques = ({ onNavClick }) => {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        
+
         <div className="bg-white p-4 rounded-lg shadow">
           <h3 className="text-lg font-semibold mb-4">10 Derniers Jours</h3>
           <ResponsiveContainer width="100%" height={300}>

@@ -54,7 +54,7 @@ export default function TransferMailModal({ isOpen, onClose }) {
         </div>
 
         <div className="space-y-4">
-          {/* Destiné à */}
+         
           <div>
             <label className="font-semibold flex items-center">
               📩 Destiné à :
@@ -72,13 +72,13 @@ export default function TransferMailModal({ isOpen, onClose }) {
             </Select>
           </div>
 
-          {/* Note */}
+         
           <div>
             <label className="font-semibold">💬 Note :</label>
             <Textarea value={note} onChange={(e) => setNote(e.target.value)} />
           </div>
 
-          {/* CC Users */}
+        
           <div>
             <label className="font-semibold flex items-center">👥 Cc :</label>
             <div className="space-y-2">
@@ -101,7 +101,7 @@ export default function TransferMailModal({ isOpen, onClose }) {
             </div>
           </div>
 
-          {/* CC Note */}
+         
           <div>
             <label className="font-semibold">💬 Note (Cc) :</label>
             <Textarea
@@ -111,7 +111,7 @@ export default function TransferMailModal({ isOpen, onClose }) {
           </div>
         </div>
 
-        {/* Buttons */}
+      
         <div className="flex justify-end space-x-2 mt-4">
           <Button variant="outline" onClick={onClose}>
             Fermer
