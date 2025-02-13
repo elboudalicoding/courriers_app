@@ -7,7 +7,7 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { UserIcon } from "lucide-react";
 import { fetchUserNames, sendMail } from "../../utils/api";
 
-export default function TransferMailModal({ isOpen, onClose }) {
+export default function TransferMailModal({ isOpen, onClose, courrierId }) {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
   const [ccUsers, setCcUsers] = useState([]);
@@ -15,7 +15,6 @@ export default function TransferMailModal({ isOpen, onClose }) {
   const [ccNote, setCcNote] = useState("");
 
   useEffect(() => {
-
     const getUsers = async () => {
       try {
         const data = await fetchUserNames();
@@ -36,6 +35,7 @@ export default function TransferMailModal({ isOpen, onClose }) {
         ccUsers,
         note,
         ccNote,
+        courrierId, // Include courrierId
       });
       alert("Email sent successfully!");
       onClose();

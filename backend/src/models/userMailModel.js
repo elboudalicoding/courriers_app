@@ -3,10 +3,10 @@ const db = require("../config/dbConfig");
 class UserMail {
   static async createMail(data) {
     const query = `
-      INSERT INTO user_mails (user_id, note)
-      VALUES (?, ?)
+      INSERT INTO user_mails (user_id, note, courrier_id)
+      VALUES (?, ?, ?)
     `;
-    const values = [data.userId, data.note];
+    const values = [data.userId, data.note, data.courrierId];
     try {
       const [result] = await db.execute(query, values);
       return { id: result.insertId, ...data };
@@ -17,7 +17,12 @@ class UserMail {
   }
 
   static async getMailsByUserId(userId) {
-    const query = `SELECT id, note FROM user_mails WHERE user_id = ?`;
+    const query = `
+      SELECT um.id, um.note, ca.*
+      FROM user_mails um
+      JOIN courriers_arrives ca ON um.courrier_id = ca.id
+      WHERE um.user_id = ?
+    `;
     try {
       const [rows] = await db.execute(query, [userId]);
       return rows;

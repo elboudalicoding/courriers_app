@@ -16,6 +16,7 @@ import Modal from "../components/Modal";
 import CourrierDetails from "./CourrierDetails";
 import MailSend from "./Courriers/mailSend";
 
+
 const CourriersTable = ({ onNavClick }) => {
   const [courriers, setCourriers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,17 +53,22 @@ const CourriersTable = ({ onNavClick }) => {
     }
   };
 
-  const handleSendClick = () => {
-    setIsTransferModalOpen(true);
-  };
+  // const handleSendClick = () => {
+  //   setIsTransferModalOpen(true);
+  // };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedCourrierId(null);
   };
 
+  const openTransferModal = (courrierId) => {
+    setSelectedCourrierId(courrierId);
+    setIsTransferModalOpen(true);
+  };
   const closeTransferModal = () => {
     setIsTransferModalOpen(false);
+    setSelectedCourrierId(null);
   };
 
   return (
@@ -125,10 +131,10 @@ const CourriersTable = ({ onNavClick }) => {
                   <Button
                     size="sm"
                     variant="ghost"
-                    onClick={handleSendClick}
+                    onClick={() => openTransferModal(item.id)}
                     className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                   >
-                    Send
+                  Envoyer 
                   </Button>
                 </div>
               </TableCell>
@@ -139,7 +145,7 @@ const CourriersTable = ({ onNavClick }) => {
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <CourrierDetails id={selectedCourrierId} />
       </Modal>
-      <MailSend isOpen={isTransferModalOpen} onClose={closeTransferModal} />
+      <MailSend isOpen={isTransferModalOpen} onClose={closeTransferModal}  courrierId={selectedCourrierId}/>
     </div>
   );
 };

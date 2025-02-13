@@ -6,7 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useAuth, AuthProvider } from "./context/authContext";
-
+ 
 import UserMails from "./pages/Courriers/userMails";
 
 
@@ -15,7 +15,11 @@ import Dashboard from "./pages/Dashboard";
 import Navbar1 from "./components/Navbar1";
 import Service from "./pages/Service";
 import  Home1  from "./pages/Home";
-
+ import UserMails from "./pages/Courriers/userMails";
+import Login from "./pages/Login";
+import Login from "./pages/login";
+import Dashboard from "./pages/Dashboard";
+ 
 function App() {
   const { isAuthenticated, login } = useAuth();
 
@@ -37,7 +41,7 @@ function App() {
           path="/dashboard"
           element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
         />
-         <Route
+          <Route
           path="/service"
           element={ <Service/> }
         />
@@ -45,7 +49,8 @@ function App() {
           path="/home"
           element={ <Home1/> }
         />
-      </Routes>
+         <Route path="/userMails/:userId" element={isAuthenticated ? <UserMails /> : <Navigate to="/" />} />
+       </Routes>
     </Router>
   );
 }
